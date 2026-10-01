@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skill Mapping — prototype</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Crect width=%27100%27 height=%27100%27 rx=%2722%27 fill=%27%231cabe2%27/%3E%3Ctext x=%2750%27 y=%2766%27 text-anchor=%27middle%27 font-family=%27system-ui,sans-serif%27 font-size=%2744%27 font-weight=%27700%27 fill=%27%23fff%27%3ESM%3C/text%3E%3C/svg%3E">
+<script src="97cb6694-007f-44e8-8553-409a499be13e"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>/* =============================================================
+   Skill Mapping — Colors & Type
+   Tokens mirror Learning-platfrom/SkillMapping app/globals.css
+   (UNICEF cyan primary #1cabe2, warm off-white background).
+   ============================================================= */
+
+/* ---- Fonts ---------------------------------------------------
+   The app uses DM Sans; the prototype keeps the native system stack
+   so it works offline. JetBrains Mono is bundled for mono helpers.
+   --------------------------------------------------------------- */
+/* cyrillic-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("77386e8d-e549-46ce-81c9-28c13840ba87") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("20be5f93-0401-4889-85cc-c318ecbd57be") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fd614eb2-1bcb-4d1c-abb0-0daf30758e61") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("e1724ac8-393d-4ff0-a934-3fcc477ff334") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("76a97e12-9a1e-49ae-883d-6ea6c02538bc") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("87e50fa1-49a3-4433-b897-8f12d67a5919") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("77386e8d-e549-46ce-81c9-28c13840ba87") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("20be5f93-0401-4889-85cc-c318ecbd57be") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fd614eb2-1bcb-4d1c-abb0-0daf30758e61") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("e1724ac8-393d-4ff0-a934-3fcc477ff334") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("76a97e12-9a1e-49ae-883d-6ea6c02538bc") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("87e50fa1-49a3-4433-b897-8f12d67a5919") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("77386e8d-e549-46ce-81c9-28c13840ba87") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("20be5f93-0401-4889-85cc-c318ecbd57be") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fd614eb2-1bcb-4d1c-abb0-0daf30758e61") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("e1724ac8-393d-4ff0-a934-3fcc477ff334") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("76a97e12-9a1e-49ae-883d-6ea6c02538bc") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("87e50fa1-49a3-4433-b897-8f12d67a5919") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("77386e8d-e549-46ce-81c9-28c13840ba87") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("20be5f93-0401-4889-85cc-c318ecbd57be") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fd614eb2-1bcb-4d1c-abb0-0daf30758e61") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("e1724ac8-393d-4ff0-a934-3fcc477ff334") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("76a97e12-9a1e-49ae-883d-6ea6c02538bc") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("87e50fa1-49a3-4433-b897-8f12d67a5919") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+
+:root {
+  /* ---------- Type families ---------- */
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji";
+  --font-mono:
+    "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+
+  /* ---------- Type scale (Tailwind defaults the app inherits) ---------- */
+  --text-2xs:  10px;     /* uppercase eyebrows, badge meta */
+  --text-xs:   12px;     /* helper, table meta */
+  --text-sm:   14px;     /* body, buttons, sidebar items */
+  --text-base: 16px;     /* default body */
+  --text-lg:   18px;     /* large body, lead paragraphs */
+  --text-xl:   20px;
+  --text-2xl:  24px;     /* CardTitle */
+  --text-3xl:  30px;
+  --text-4xl:  36px;     /* onboarding section headline */
+  --text-5xl:  48px;     /* hero headlines */
+  --text-6xl:  60px;     /* welcome hero */
+
+  --leading-tight:   1.05;
+  --leading-snug:    1.2;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.625;
+
+  --tracking-tight:  -0.02em;
+  --tracking-eyebrow: 0.16em;  /* the 11px uppercase "WHAT IT DOES" eyebrow */
+  --tracking-caps:    0.1em;
+
+  /* ---------- Color primitives (light) ---------- */
+  /* Brand blue family — the single hue that carries the product */
+  --brand-50:  oklch(0.97 0.02 232);
+  --brand-100: oklch(0.94 0.04 232);
+  --brand-200: oklch(0.88 0.07 232);
+  --brand-300: oklch(0.81 0.10 232);
+  --brand-400: oklch(0.75 0.12 232);
+  --brand-500: oklch(0.69 0.13 232);    /* ≈ #1cabe2 */
+  --brand-600: oklch(0.62 0.12 232);
+  --brand-700: oklch(0.54 0.11 232);
+  --brand-800: oklch(0.44 0.09 232);
+  --brand-900: oklch(0.32 0.07 232);
+  --brand-950: oklch(0.20 0.05 232);
+
+  --accent-cyan: #1cabe2;
+
+  /* Neutral grays (shadcn defaults via Tailwind v4 oklch ramp) */
+  --neutral-50:  oklch(0.985 0 0);
+  --neutral-100: oklch(0.97  0 0);
+  --neutral-200: oklch(0.922 0 0);
+  --neutral-300: oklch(0.86  0 0);
+  --neutral-400: oklch(0.708 0 0);
+  --neutral-500: oklch(0.556 0 0);
+  --neutral-600: oklch(0.44  0 0);
+  --neutral-700: oklch(0.33  0 0);    /* StudioTopBar bg-gray-700 */
+  --neutral-800: oklch(0.25  0 0);
+  --neutral-900: oklch(0.205 0 0);
+  --neutral-950: oklch(0.145 0 0);
+
+  /* Semantic surfaces ------------------------------------------ */
+  --background: oklch(0.985 0.006 95);
+  --foreground: oklch(0.22 0.02 220);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0.02 220);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+
+  --primary: #1cabe2;
+  --primary-foreground: oklch(1 0 0);
+
+  --secondary: oklch(0.95 0.025 232);
+  --secondary-foreground: oklch(0.35 0.09 240);
+
+  --muted: oklch(0.955 0.008 95);
+  --muted-foreground: oklch(0.5 0.02 220);
+
+  --accent: oklch(0.86 0.12 80);
+  --accent-foreground: oklch(0.28 0.05 60);
+
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+
+  --border: oklch(0.91 0.01 95);
+  --input:  oklch(0.91 0.01 95);
+  --ring:   #1cabe2;
+
+  --sidebar:                    oklch(0.985 0 0);
+  --sidebar-foreground:         oklch(0.145 0 0);
+  --sidebar-primary:            oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent:             oklch(0.97 0 0);
+  --sidebar-accent-foreground:  oklch(0.205 0 0);
+  --sidebar-border:             oklch(0.922 0 0);
+  --sidebar-ring:               oklch(0.708 0 0);
+
+  /* Top bar (the "ADT Studio" header strip) */
+  --topbar:           #374151;   /* tailwind gray-700 */
+  --topbar-hover:     #4b5563;
+  --topbar-fg:        #ffffff;
+  --topbar-fg-dim:    rgba(255,255,255,0.7);
+
+  /* ---------- Stage palette ----------
+     Every pipeline stage carries a distinct hue. This is the spine of
+     the system: stage rows, badges, page rails, and active-state ring
+     all derive from these. Each comes with a 600 (color) + light 50
+     surface + 200 border. */
+  --stage-book:        #4b5563;  --stage-book-50:        #f9fafb;  --stage-book-200:        #e5e7eb;
+  --stage-extract:     #2563eb;  --stage-extract-50:     #eff6ff;  --stage-extract-200:     #bfdbfe;
+  --stage-sectioning:  #0284c7;  --stage-sectioning-50:  #f0f9ff;  --stage-sectioning-200:  #bae6fd;
+  --stage-storyboard:  #7c3aed;  --stage-storyboard-50:  #f5f3ff;  --stage-storyboard-200:  #ddd6fe;
+  --stage-captions:    #0d9488;  --stage-captions-50:    #f0fdfa;  --stage-captions-200:    #99f6e4;
+  --stage-quizzes:     #ea580c;  --stage-quizzes-50:     #fff7ed;  --stage-quizzes-200:     #fed7aa;
+  --stage-glossary:    #65a30d;  --stage-glossary-50:    #f7fee7;  --stage-glossary-200:    #d9f99d;
+  --stage-toc:         #d97706;  --stage-toc-50:         #fffbeb;  --stage-toc-200:         #fde68a;
+  --stage-translate:   #db2777;  --stage-translate-50:   #fdf2f8;  --stage-translate-200:   #fbcfe8;
+  --stage-speech:      #e11d48;  --stage-speech-50:      #fff1f2;  --stage-speech-200:      #fecdd3;
+  --stage-sign:        #0891b2;  --stage-sign-50:        #ecfeff;  --stage-sign-200:        #a5f3fc;
+  --stage-validation:  #059669;  --stage-validation-50:  #ecfdf5;  --stage-validation-200:  #a7f3d0;
+  --stage-preview:     #4b5563;  --stage-preview-50:     #f9fafb;  --stage-preview-200:     #e5e7eb;
+  --stage-export:      #4338ca;  --stage-export-50:      #eef2ff;  --stage-export-200:     #c7d2fe;
+
+  /* Stage groupings */
+  --stage-group-convert:      var(--stage-extract);
+  --stage-group-enhancements: var(--stage-captions);
+  --stage-group-packaging:    var(--stage-export);
+
+  /* ---------- Radii ---------- */
+  --radius:    0.625rem;             /* 10px — the base */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: 1rem;                /* book-card-like surfaces */
+  --radius-full: 9999px;
+
+  /* ---------- Shadows ---------- */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow:    0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* Brand-tinted shadow used for elevated cards in onboarding/marketing */
+  --shadow-brand: 0 24px 60px -18px rgba(28,171,226,.55), 0 2px 8px rgba(0,0,0,.08);
+  --shadow-brand-soft: 0 30px 60px -20px rgba(28,171,226,.25), 0 4px 14px rgba(0,0,0,.08);
+
+  /* ---------- Spacing scale (Tailwind v4 default — 0.25rem step) ---------- */
+  --space-0: 0;
+  --space-1: 0.25rem;     /* 4 */
+  --space-2: 0.5rem;      /* 8 */
+  --space-3: 0.75rem;     /* 12 */
+  --space-4: 1rem;        /* 16 */
+  --space-5: 1.25rem;     /* 20 */
+  --space-6: 1.5rem;      /* 24 */
+  --space-8: 2rem;        /* 32 */
+  --space-10: 2.5rem;     /* 40 */
+  --space-12: 3rem;       /* 48 */
+  --space-16: 4rem;       /* 64 */
+
+  /* ---------- Motion ---------- */
+  --ease-out-smooth: cubic-bezier(0.22, 1, 0.36, 1); /* the workhorse */
+  --ease-out:        cubic-bezier(0, 0, 0.2, 1);
+  --duration-fast:   150ms;
+  --duration-base:   200ms;
+  --duration-slow:   300ms;
+  --duration-slower: 700ms;
+}
+
+.dark {
+  --background:          oklch(0.15 0.02 250);
+  --foreground:          oklch(0.93 0.01 250);
+  --card:                oklch(0.17 0.02 250);
+  --card-foreground:     oklch(0.93 0.01 250);
+  --popover:             oklch(0.17 0.02 250);
+  --popover-foreground:  oklch(0.93 0.01 250);
+  --primary:             oklch(0.72 0.189 260);
+  --primary-foreground:  oklch(0.15 0.02 250);
+  --secondary:           oklch(0.23 0.025 250);
+  --secondary-foreground: oklch(0.93 0.01 250);
+  --muted:               oklch(0.23 0.025 250);
+  --muted-foreground:    oklch(0.65 0.03 250);
+  --accent:              oklch(0.25 0.03 250);
+  --accent-foreground:   oklch(0.93 0.01 250);
+  --destructive:         oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border:              oklch(0.28 0.03 250);
+  --input:               oklch(0.25 0.03 250);
+  --ring:                oklch(0.72 0.189 260);
+  --sidebar:             oklch(0.13 0.025 250);
+  --sidebar-foreground:  oklch(0.93 0.01 250);
+  --sidebar-border:      oklch(0.26 0.03 250);
+}
+
+/* =============================================================
+   Semantic type ROLES — apply directly on elements, no class needed.
+   These mirror how StudioTopBar / onboarding / cards use type.
+   ============================================================= */
+
+html, body {
+  font-family: var(--font-sans);
+  color: var(--foreground);
+  background: var(--background);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* --- Display & headlines --- */
+h1, .h1 {
+  font-size: var(--text-5xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  font-weight: 700;
+  text-wrap: balance;
+  margin: 0;
+}
+h2, .h2 {
+  font-size: var(--text-4xl);
+  line-height: 1.1;
+  letter-spacing: var(--tracking-tight);
+  font-weight: 600;
+  margin: 0;
+}
+h3, .h3 {
+  font-size: var(--text-2xl);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  font-weight: 600;     /* "leading-none tracking-tight" CardTitle */
+  margin: 0;
+}
+h4, .h4 {
+  font-size: var(--text-lg);
+  line-height: 1.3;
+  font-weight: 600;
+  margin: 0;
+}
+h5, .h5 {
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* --- Body --- */
+p, .p {
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--foreground);
+  margin: 0;
+}
+.p-lg {
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+  color: var(--muted-foreground);
+}
+.muted {
+  color: var(--muted-foreground);
+}
+
+/* --- Eyebrow (the "WHAT IT DOES" 11px caps with hairline rule) --- */
+.eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+/* --- Section label (the "PIPELINE STAGES" 12px caps with letter-spacing) --- */
+.section-label {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted-foreground);
+}
+
+/* --- Mono helpers --- */
+code, kbd, samp, .mono {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+.tag-mono {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+</style>
+
+<style>
+body{margin:0;background:oklch(0.95 0.008 95);font-family:var(--font-sans);color:var(--foreground);-webkit-font-smoothing:antialiased}
+a{color:var(--primary);text-decoration:none}a:hover{color:var(--brand-700)}
+*{box-sizing:border-box}
+textarea,input,select,button{font-family:inherit}
+.scr::-webkit-scrollbar{display:none}
+@keyframes t1in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.card{border:1px solid var(--border);border-radius:12px;background:#fff}
+.btn{height:48px;border:0;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;padding:0 16px;text-decoration:none}
+.btn-p{background:var(--primary);color:#fff}.btn-p:hover{color:#fff;opacity:0.92}
+.btn-o{background:#fff;color:var(--foreground);border:1px solid var(--border)}
+.btn-g{background:none;color:var(--foreground)}.btn-g:hover{background:var(--muted);color:var(--foreground)}
+.btn-sm{height:40px;font-size:14px;border-radius:9px;padding:0 14px}
+.back{align-self:flex-start;height:32px;display:flex;align-items:center;gap:6px;border:0;background:none;padding:0;color:var(--muted-foreground);font-size:14px;font-weight:500;cursor:pointer}
+.lbl{font-size:13px;font-weight:600}
+.fld{display:flex;flex-direction:column;gap:6px}
+.inp{height:44px;padding:0 12px;border:1px solid var(--border);border-radius:8px;background:#fff;font-size:15px;color:var(--foreground);outline:none;width:100%}
+textarea.inp{height:auto;padding:10px 12px;line-height:1.45;resize:none}
+.inp:focus{border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in oklch,var(--primary) 25%,transparent)}
+.cap{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted-foreground)}
+.av{border-radius:999px;background:var(--brand-100);color:var(--brand-800);display:flex;align-items:center;justify-content:center;font-weight:600;flex:none}
+.pill{font-size:11px;font-weight:600;padding:3px 8px;border-radius:999px;display:inline-flex;align-items:center;gap:5px;flex:none;white-space:nowrap}
+.dot{width:6px;height:6px;border-radius:999px;background:currentColor}
+.chip{font-size:12px;padding:3px 10px;border-radius:999px;font-weight:500}
+.segw{display:flex;padding:3px;background:var(--muted);border-radius:10px;gap:2px}
+.segb{flex:1;height:34px;border:0;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer}
+.ttl{font-size:24px;font-weight:700;letter-spacing:-0.02em;line-height:1.15;text-wrap:balance}
+.sub{font-size:14px;line-height:1.5;color:var(--muted-foreground);text-wrap:pretty}
+.chk{display:flex;align-items:flex-start;gap:10px;border:0;background:none;padding:0;text-align:left;font-size:14px;line-height:1.35;color:var(--foreground);cursor:pointer}
+.box{width:20px;height:20px;border-radius:5px;border:1.5px solid;display:flex;align-items:center;justify-content:center;color:#fff;flex:none}
+.err{font-size:12px;color:var(--destructive)}
+.ok{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:12px;border:1px solid #a7f3d0;background:#ecfdf5;color:#064e3b;font-size:13px;line-height:1.45;animation:t1in 400ms cubic-bezier(0.22,1,0.36,1) both}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-wrap:wrap;gap:48px;justify-content:center;align-items:flex-start;padding:48px 24px">
+  <sc-if value="{{ showJourney }}" hint-placeholder-val="{{ true }}">
+    <div style="width:260px;display:flex;flex-direction:column;gap:20px;padding-top:24px">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted-foreground)">Skill Mapping · Prototype</div>
+        <div style="font-size:24px;font-weight:700;letter-spacing:-0.02em;line-height:1.2;text-wrap:balance">Learn from each other, across every office.</div>
+        <div style="font-size:14px;line-height:1.5;color:var(--muted-foreground);text-wrap:pretty">Tap through the phone, or jump to any step of the journey.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <div style="font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted-foreground);padding:0 10px 6px">Journey</div>
+        <sc-for list="{{ journey }}" as="j" hint-placeholder-count="8">
+          <button sc-camel-on-click="{{ j.go }}" style="display:flex;align-items:center;gap:10px;padding:9px 10px;border:0;border-radius:8px;background:{{ j.bg }};color:var(--foreground);font-size:14px;text-align:left;cursor:pointer">
+            <span style="width:22px;height:22px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;font-variant-numeric:tabular-nums;background:{{ j.numBg }};color:{{ j.numFg }}">{{ j.n }}</span>
+            <span style="font-weight:{{ j.fw }}">{{ j.label }}</span>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <x-import component-from-global-scope="IOSDevice" from="542f653d-87a6-4c0a-bc72-b49d9614f386#/ios-frame.jsx" hint-size="402px,874px">
+    <div style="height:874px;display:flex;flex-direction:column;background:var(--background);position:relative">
+      <div style="height:54px;flex:none;background:#fff"></div>
+      <div style="height:52px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 16px 0 20px;border-bottom:1px solid var(--border);background:#fff">
+        <button sc-camel-on-click="{{ goHome }}" style="display:flex;align-items:center;gap:8px;border:0;background:none;padding:0;cursor:pointer;color:var(--foreground)">
+          <span style="width:30px;height:30px;border-radius:8px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center">{{ i.network16 }}</span>
+          <span style="font-size:17px;font-weight:700;letter-spacing:-0.02em">Skill Mapping</span>
+        </button>
+        <button sc-camel-on-click="{{ goRequests }}" aria-label="My requests" style="position:relative;width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;color:var(--neutral-600);cursor:pointer">
+          {{ i.bell20 }}
+          <sc-if value="{{ hasUnread }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:10px;right:11px;width:8px;height:8px;border-radius:999px;background:var(--primary);border:2px solid #fff"></span></sc-if>
+        </button>
+      </div>
+
+      <div class="scr" ref="{{ scrollRef }}" style="flex:1;overflow-y:auto;scrollbar-width:none">
+
+        <!-- 1 HOME -->
+        <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:16px 16px 28px;display:flex;flex-direction:column;gap:24px">
+            <div style="display:flex;flex-direction:column;gap:12px;padding:22px 18px 18px;border-radius:16px;background:var(--primary);color:#fff">
+              <div style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:oklch(0.93 0.1 85)">Peer expertise directory</div>
+              <div style="font-size:26px;font-weight:700;letter-spacing:-0.02em;line-height:1.12;text-wrap:balance">What skill or topic do you need help with?</div>
+              <div style="font-size:14px;line-height:1.45;color:rgba(255,255,255,0.9);text-wrap:pretty">Find colleagues across offices and regions who can support you — then request help in a few clicks.</div>
+              <button sc-camel-on-click="{{ goSearchEmpty }}" style="margin-top:4px;height:48px;display:flex;align-items:center;gap:10px;padding:0 14px;border:0;border-radius:10px;background:#fff;color:var(--muted-foreground);font-size:15px;text-align:left;cursor:text;box-shadow:var(--shadow-sm)">{{ i.search18 }}<span>Try Power BI, M&amp;E, Cybersecurity…</span></button>
+            </div>
+
+            <sc-if value="{{ activeReq }}" hint-placeholder-val="{{ false }}">
+              <button sc-camel-on-click="{{ activeReq.open }}" style="display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--brand-200);border-radius:12px;background:var(--brand-50);cursor:pointer;text-align:left;color:var(--foreground)">
+                <span style="width:36px;height:36px;border-radius:999px;background:{{ activeReq.iconBg }};color:#fff;display:flex;align-items:center;justify-content:center;flex:none">{{ activeReq.icon }}</span>
+                <span style="flex:1;display:flex;flex-direction:column;gap:2px;min-width:0">
+                  <span style="font-size:14px;font-weight:600">{{ activeReq.skill }} with {{ activeReq.first }}</span>
+                  <span style="font-size:12px;color:var(--muted-foreground)">{{ activeReq.label }}</span>
+                </span>
+                <span style="color:var(--muted-foreground)">{{ i.chevR16 }}</span>
+              </button>
+            </sc-if>
+
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline">
+                <div class="cap">Popular skills</div>
+                <button sc-camel-on-click="{{ goSearchEmpty }}" style="border:0;background:none;padding:0;color:var(--primary);font-size:13px;font-weight:500;cursor:pointer">Browse all experts →</button>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                <sc-for list="{{ popular }}" as="p" hint-placeholder-count="6">
+                  <button sc-camel-on-click="{{ p.go }}" class="card" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:12px;cursor:pointer;text-align:left;color:var(--foreground)">
+                    <span style="font-size:11px;color:var(--muted-foreground);line-height:1.3">{{ p.category }}</span>
+                    <span style="font-size:14px;font-weight:600;line-height:1.25">{{ p.name }}</span>
+                    <span style="font-size:12px;color:var(--primary);font-weight:500">{{ p.count }}</span>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline">
+                <div class="cap">Available now</div>
+                <button sc-camel-on-click="{{ goSearchAvailable }}" style="border:0;background:none;padding:0;color:var(--primary);font-size:13px;font-weight:500;cursor:pointer">See all</button>
+              </div>
+              <div class="card" style="display:flex;flex-direction:column;overflow:hidden">
+                <sc-for list="{{ availableNow }}" as="e" hint-placeholder-count="3">
+                  <button sc-camel-on-click="{{ e.open }}" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:0;border-bottom:1px solid var(--border);background:#fff;text-align:left;cursor:pointer;color:var(--foreground)">
+                    <span class="av" style="width:40px;height:40px;font-size:14px">{{ e.initials }}</span>
+                    <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+                      <span style="font-size:14px;font-weight:600">{{ e.name }}</span>
+                      <span style="font-size:12px;color:var(--muted-foreground)">{{ e.topSkills }}</span>
+                    </span>
+                    <span style="color:var(--muted-foreground)">{{ i.chevR16 }}</span>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div class="cap">How it works</div>
+              <div class="card" style="display:flex;flex-direction:column">
+                <sc-for list="{{ howItWorks }}" as="h" hint-placeholder-count="3">
+                  <div style="display:flex;gap:12px;padding:12px 14px;border-bottom:1px solid var(--border)">
+                    <span style="width:32px;height:32px;border-radius:999px;background:var(--secondary);color:var(--primary);display:flex;align-items:center;justify-content:center;flex:none">{{ h.icon }}</span>
+                    <span style="display:flex;flex-direction:column;gap:2px">
+                      <span style="font-size:14px;font-weight:600">{{ h.title }}</span>
+                      <span style="font-size:13px;line-height:1.4;color:var(--muted-foreground)">{{ h.text }}</span>
+                    </span>
+                  </div>
+                </sc-for>
+              </div>
+              <button sc-camel-on-click="{{ goSkills }}" style="display:flex;align-items:center;gap:12px;padding:14px;border:1px dashed var(--brand-300);border-radius:12px;background:#fff;cursor:pointer;text-align:left;color:var(--foreground)">
+                <span style="color:var(--primary)">{{ i.book18 }}</span>
+                <span style="flex:1;font-size:13px;line-height:1.4"><span style="font-weight:600">Have expertise to share?</span> Add your skills so colleagues can find you.</span>
+                <span style="color:var(--muted-foreground)">{{ i.chevR16 }}</span>
+              </button>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- 2 SEARCH -->
+        <sc-if value="{{ isSearch }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:16px 20px 28px;display:flex;flex-direction:column;gap:14px">
+            <div style="height:44px;display:flex;align-items:center;gap:8px;padding:0 12px;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--muted-foreground)">
+              {{ i.search16 }}
+              <input value="{{ query }}" sc-camel-on-change="{{ onQuery }}" placeholder="Try Power BI, M&amp;E, Cybersecurity…" aria-label="What skill or topic do you need help with?" style="flex:1;min-width:0;border:0;outline:none;font-size:15px;color:var(--foreground);background:none">
+              <sc-if value="{{ hasQuery }}" hint-placeholder-val="{{ false }}"><button sc-camel-on-click="{{ clearQuery }}" aria-label="Clear search" style="width:28px;height:28px;border:0;background:var(--muted);border-radius:999px;display:flex;align-items:center;justify-content:center;color:var(--neutral-600);cursor:pointer">{{ i.x14 }}</button></sc-if>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <sc-if value="{{ hasQuery }}" hint-placeholder-val="{{ true }}"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em;line-height:1.25">Colleagues who can help with <span style="color:var(--primary)">{{ query }}</span></div></sc-if>
+              <sc-if value="{{ noQuery }}" hint-placeholder-val="{{ false }}"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em;line-height:1.25">All colleagues offering support</div></sc-if>
+              <div style="font-size:13px;color:var(--muted-foreground)">{{ resultLabel }}</div>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <sc-for list="{{ filters }}" as="f" hint-placeholder-count="3">
+                <button sc-camel-on-click="{{ f.go }}" style="height:32px;padding:0 12px;border:1px solid {{ f.bd }};border-radius:999px;background:{{ f.bg }};color:{{ f.fg }};font-size:13px;font-weight:500;cursor:pointer">{{ f.label }}</button>
+              </sc-for>
+            </div>
+            <sc-for list="{{ results }}" as="e" hint-placeholder-count="4">
+              <button sc-camel-on-click="{{ e.open }}" class="card" style="display:flex;flex-direction:column;gap:10px;padding:14px;text-align:left;cursor:pointer;color:var(--foreground);opacity:{{ e.op }};animation:t1in 300ms cubic-bezier(0.22,1,0.36,1) both">
+                <span style="display:flex;gap:12px;align-items:flex-start">
+                  <span class="av" style="width:44px;height:44px;font-size:15px">{{ e.initials }}</span>
+                  <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                    <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+                      <span style="font-size:15px;font-weight:600">{{ e.name }}</span>
+                      <span class="pill" style="background:{{ e.avBg }};color:{{ e.avFg }};box-shadow:inset 0 0 0 1px {{ e.avRing }}"><span class="dot"></span>{{ e.availability }}</span>
+                    </span>
+                    <span style="font-size:12px;color:var(--muted-foreground)">{{ e.title }}</span>
+                    <span style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--muted-foreground)">{{ i.pin12 }}<span>{{ e.office }}, {{ e.country }}</span></span>
+                  </span>
+                </span>
+                <span style="display:flex;flex-direction:column;gap:1px;padding:10px 12px;border-radius:10px;background:var(--muted)">
+                  <span style="font-size:14px;font-weight:600">{{ e.main.name }}</span>
+                  <span style="font-size:12px;color:var(--muted-foreground)">{{ e.main.proficiency }} · {{ e.main.years }} years experience</span>
+                </span>
+                <span style="display:flex;flex-wrap:wrap;gap:4px">
+                  <sc-for list="{{ e.chips }}" as="c" hint-placeholder-count="2">
+                    <span class="chip" style="background:{{ c.bg }};color:{{ c.fg }}">{{ c.name }}</span>
+                  </sc-for>
+                </span>
+              </button>
+            </sc-for>
+            <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:40px 16px;border:1px dashed var(--neutral-300);border-radius:12px;text-align:center;background:#fff">
+                <div style="font-size:15px;font-weight:600">No colleagues found</div>
+                <div style="font-size:13px;line-height:1.45;color:var(--muted-foreground)">Try a broader term like "Data" or "Technology", or include colleagues with limited availability.</div>
+                <button sc-camel-on-click="{{ clearQuery }}" class="btn btn-o btn-sm">Clear search</button>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <!-- 3 EXPERT PROFILE -->
+        <sc-if value="{{ isProfile }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column">
+            <div style="padding:12px 20px 0"><button sc-camel-on-click="{{ goBackResults }}" class="back">{{ i.arrowL16 }}{{ backLabel }}</button></div>
+            <div style="padding:12px 20px 16px;display:flex;gap:16px;align-items:center">
+              <span class="av" style="width:76px;height:76px;font-size:26px">{{ ex.initials }}</span>
+              <div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+                <div style="font-size:22px;font-weight:700;letter-spacing:-0.02em;line-height:1.1">{{ ex.name }}</div>
+                <div style="font-size:14px;color:var(--muted-foreground)">{{ ex.title }}</div>
+                <span class="pill" style="align-self:flex-start;background:{{ ex.avBg }};color:{{ ex.avFg }};box-shadow:inset 0 0 0 1px {{ ex.avRing }}"><span class="dot"></span>{{ ex.availability }}</span>
+              </div>
+            </div>
+            <div style="padding:0 20px 16px;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted-foreground)">
+              <span style="display:flex;align-items:center;gap:4px">{{ i.pin12 }}<span>{{ ex.office }}, {{ ex.country }}</span></span>
+              <span style="display:flex;align-items:center;gap:4px">{{ i.globe12 }}{{ ex.region }}</span>
+              <span style="display:flex;align-items:center;gap:4px">{{ i.lang12 }}{{ ex.languages }}</span>
+            </div>
+            <div style="padding:0 20px 16px">
+              <div class="card" style="padding:14px;display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <span style="font-size:15px;font-weight:600">Request support</span>
+                  <sc-if value="{{ ex.ratingLabel }}" hint-placeholder-val="{{ true }}"><span style="font-size:13px;color:var(--muted-foreground)"><span style="color:oklch(0.72 0.15 75)">★</span> {{ ex.ratingLabel }}</span></sc-if>
+                </div>
+                <div style="font-size:13px;line-height:1.45;color:var(--neutral-700)">{{ ex.panelMsg }}</div>
+                <sc-if value="{{ ex.canRequest }}" hint-placeholder-val="{{ true }}"><button sc-camel-on-click="{{ goRequest }}" class="btn btn-p">Request support</button></sc-if>
+                <sc-if value="{{ ex.blocked }}" hint-placeholder-val="{{ false }}"><button sc-camel-on-click="{{ goSearchAvailable }}" class="btn btn-o">Find available colleagues</button></sc-if>
+                <div style="font-size:12px;color:var(--muted-foreground)">Active requests: {{ ex.active }} of {{ ex.max }}</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:4px;padding:0 20px;border-bottom:1px solid var(--border)">
+              <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="2">
+                <button sc-camel-on-click="{{ t.go }}" style="flex:1;height:42px;border:0;background:none;font-size:13px;font-weight:{{ t.fw }};color:{{ t.fg }};border-bottom:2px solid {{ t.bd }};cursor:pointer">{{ t.label }}</button>
+              </sc-for>
+            </div>
+            <div style="padding:20px;display:flex;flex-direction:column;gap:20px">
+              <sc-if value="{{ tabOverview }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex;flex-direction:column;gap:8px">
+                  <div style="font-size:15px;font-weight:600">About</div>
+                  <div style="font-size:14px;line-height:1.55;color:var(--neutral-700);text-wrap:pretty">{{ ex.bio }}</div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <div style="font-size:15px;font-weight:600">Can help with</div>
+                  <div style="display:flex;flex-wrap:wrap;gap:6px">
+                    <sc-for list="{{ ex.topics }}" as="c" hint-placeholder-count="4"><span class="chip" style="background:var(--secondary);color:var(--secondary-foreground)">{{ c }}</span></sc-for>
+                  </div>
+                </div>
+                <sc-if value="{{ ex.hasLearning }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:10px">
+                    <div style="font-size:15px;font-weight:600">Currently learning</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:6px">
+                      <sc-for list="{{ ex.learning }}" as="c" hint-placeholder-count="1"><span class="chip" style="background:#fff;color:var(--neutral-700);box-shadow:inset 0 0 0 1px var(--border)">{{ c }}</span></sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+              </sc-if>
+              <sc-if value="{{ tabSkills }}" hint-placeholder-val="{{ false }}">
+                <div style="font-size:15px;font-weight:600">Skills they can support with</div>
+                <sc-for list="{{ ex.skillRows }}" as="s" hint-placeholder-count="4">
+                  <div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px">
+                    <span style="display:flex;flex-direction:column;gap:2px;min-width:0">
+                      <span style="font-size:14px;font-weight:600">{{ s.name }}</span>
+                      <span style="font-size:12px;color:var(--muted-foreground)">{{ s.years }} years experience</span>
+                    </span>
+                    <span class="pill" style="background:var(--secondary);color:var(--secondary-foreground)">{{ s.proficiency }}</span>
+                  </div>
+                </sc-for>
+              </sc-if>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- 4 REQUEST SUPPORT -->
+        <sc-if value="{{ isRequest }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:12px 20px 28px;display:flex;flex-direction:column;gap:18px">
+            <button sc-camel-on-click="{{ reqBack }}" class="back">{{ i.arrowL16 }}Back to {{ ex.name }}</button>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div class="ttl">Request support from {{ ex.name }}</div>
+              <div class="sub">They'll be able to accept, redirect you to someone better placed, or suggest another time.</div>
+            </div>
+            <sc-if value="{{ ex.blocked }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:14px;border-radius:12px;background:var(--muted);font-size:14px;line-height:1.45;color:var(--neutral-700)">{{ ex.name }} isn't able to take new requests right now. <button sc-camel-on-click="{{ goSearchAvailable }}" style="border:0;background:none;padding:0;color:var(--primary);font-size:14px;font-weight:600;cursor:pointer">Find an available colleague.</button></div>
+            </sc-if>
+            <sc-if value="{{ ex.canRequest }}" hint-placeholder-val="{{ true }}">
+              <label class="fld">
+                <span class="lbl">Topic</span>
+                <sc-raw-select value="{{ req.skill }}" sc-camel-on-change="{{ onTopic }}" class="inp">
+                  <sc-for list="{{ ex.skillNames }}" as="s" hint-placeholder-count="3"><option value="{{ s }}" label="{{ s }}">{{ s }}</option></sc-for>
+                </sc-raw-select>
+              </label>
+              <label class="fld">
+                <span class="lbl">Describe your need</span>
+                <textarea value="{{ req.need }}" sc-camel-on-change="{{ onNeed }}" rows="4" class="inp" placeholder="e.g. I need help designing a dashboard for our quarterly programme data." style="border-color:{{ needBorder }}"></textarea>
+                <sc-if value="{{ errNeed }}" hint-placeholder-val="{{ false }}"><span class="err">Please describe your need in at least a sentence.</span></sc-if>
+              </label>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <span class="lbl">Support type</span>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                  <sc-for list="{{ types }}" as="t" hint-placeholder-count="4">
+                    <button sc-camel-on-click="{{ t.go }}" role="radio" aria-checked="{{ t.aria }}" style="display:flex;align-items:center;gap:8px;min-height:48px;padding:10px 12px;border:1.5px solid {{ t.bd }};border-radius:10px;background:{{ t.bg }};text-align:left;cursor:pointer;color:var(--foreground);font-size:13px;font-weight:600;line-height:1.25">
+                      <span style="width:16px;height:16px;border-radius:999px;border:1.5px solid {{ t.bd }};display:flex;align-items:center;justify-content:center;flex:none"><span style="width:8px;height:8px;border-radius:999px;background:{{ t.dot }}"></span></span>{{ t.label }}
+                    </button>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <span class="lbl">Preferred timing</span>
+                <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+                  <sc-for list="{{ timings }}" as="t" hint-placeholder-count="3">
+                    <button sc-camel-on-click="{{ t.go }}" role="radio" aria-checked="{{ t.aria }}" style="height:40px;padding:0 8px;border:1px solid {{ t.bd }};border-radius:999px;background:{{ t.bg }};color:{{ t.fg }};font-size:13px;font-weight:500;cursor:pointer">{{ t.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <button sc-camel-on-click="{{ reqSend }}" class="btn btn-p">Submit request</button>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <!-- 5 REQUEST DETAIL -->
+        <sc-if value="{{ isStatus }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:12px 20px 28px;display:flex;flex-direction:column;gap:16px">
+            <button sc-camel-on-click="{{ goRequestsBack }}" class="back">{{ i.arrowL16 }}Back to requests</button>
+            <sc-if value="{{ bannerSubmitted }}" hint-placeholder-val="{{ false }}"><div class="ok" role="status"><span style="flex:none;margin-top:1px">{{ i.check16 }}</span><span>Your request has been sent to {{ cur.expertName }}. You'll see their response here.</span></div></sc-if>
+            <sc-if value="{{ bannerFeedback }}" hint-placeholder-val="{{ false }}"><div class="ok" role="status"><span style="flex:none;margin-top:1px">{{ i.check16 }}</span><span>Thank you — your feedback helps the network learn and recognises expertise.</span></div></sc-if>
+            <div class="card" style="padding:16px;display:flex;flex-direction:column;gap:16px;border-radius:16px">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+                <div style="display:flex;flex-direction:column;gap:2px">
+                  <span style="font-size:13px;color:var(--muted-foreground)">Request #{{ cur.id }}</span>
+                  <span style="font-size:22px;font-weight:700;letter-spacing:-0.02em;line-height:1.15">{{ cur.skill }}</span>
+                </div>
+                <span class="pill" style="background:{{ cur.badge.bg }};color:{{ cur.badge.fg }};box-shadow:inset 0 0 0 1px {{ cur.badge.ring }}">{{ cur.status }}</span>
+              </div>
+              <sc-if value="{{ cur.showSteps }}" hint-placeholder-val="{{ true }}">
+                <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px" aria-label="Request progress">
+                  <sc-for list="{{ cur.steps }}" as="p" hint-placeholder-count="4">
+                    <div style="display:flex;flex-direction:column;gap:6px">
+                      <span style="height:6px;border-radius:999px;background:{{ p.bar }};transition:background 300ms"></span>
+                      <span style="font-size:11px;line-height:1.25;font-weight:{{ p.fw }};color:{{ p.fg }}">{{ p.label }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;font-size:13px">
+                <sc-for list="{{ cur.details }}" as="d" hint-placeholder-count="6">
+                  <div style="display:flex;flex-direction:column;gap:2px;grid-column:{{ d.span }}">
+                    <span style="color:var(--muted-foreground)">{{ d.k }}</span>
+                    <span style="font-weight:{{ d.fw }};line-height:1.45;color:var(--foreground)">{{ d.v }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <sc-if value="{{ cur.canOpenExpert }}" hint-placeholder-val="{{ true }}"><button sc-camel-on-click="{{ cur.openExpert }}" style="align-self:flex-start;border:0;background:none;padding:0;color:var(--primary);font-size:13px;font-weight:600;cursor:pointer">View {{ cur.expertName }}'s profile →</button></sc-if>
+
+              <sc-if value="{{ cur.isIncoming }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--border);padding-top:16px">
+                  <div style="font-size:14px;font-weight:600">Your response</div>
+                  <div style="display:flex;flex-wrap:wrap;gap:8px">
+                    <sc-for list="{{ cur.actions }}" as="a" hint-placeholder-count="3">
+                      <button sc-camel-on-click="{{ a.go }}" class="{{ a.cls }}">{{ a.label }}</button>
+                    </sc-for>
+                    <a href="{{ cur.mailto }}" class="btn btn-g btn-sm">{{ i.mail16 }}Email requester</a>
+                  </div>
+                  <sc-if value="{{ cur.noActions }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--muted-foreground)">No further action needed on this request.</div></sc-if>
+                </div>
+              </sc-if>
+              <sc-if value="{{ cur.canCancel }}" hint-placeholder-val="{{ false }}">
+                <div style="border-top:1px solid var(--border);padding-top:16px"><button sc-camel-on-click="{{ cancelReq }}" class="btn btn-o btn-sm">Cancel request</button></div>
+              </sc-if>
+              <sc-if value="{{ cur.isRedirected }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:12px;border-radius:10px;background:var(--muted);font-size:13px;line-height:1.45;color:var(--muted-foreground)">{{ cur.expertName }} suggested someone better placed to help. <button sc-camel-on-click="{{ cur.findAnother }}" style="border:0;background:none;padding:0;color:var(--primary);font-size:13px;font-weight:600;cursor:pointer">Find another colleague for {{ cur.skill }}</button>.</div>
+              </sc-if>
+            </div>
+            <sc-if value="{{ cur.canSimulate }}" hint-placeholder-val="{{ false }}">
+              <button sc-camel-on-click="{{ simulateDone }}" style="height:44px;border:1.5px dashed var(--neutral-300);border-radius:10px;background:none;color:var(--muted-foreground);font-size:13px;font-weight:500;cursor:pointer">Prototype: simulate {{ cur.expertFirst }} marking it completed</button>
+            </sc-if>
+            <sc-if value="{{ cur.needsFeedback }}" hint-placeholder-val="{{ false }}">
+              <div class="card" style="padding:14px;display:flex;flex-direction:column;gap:10px;border-color:var(--brand-200);background:var(--brand-50)">
+                <div style="font-size:14px;font-weight:600">How was the support?</div>
+                <div style="font-size:13px;line-height:1.45;color:var(--neutral-700)">Your feedback recognises {{ cur.expertName }}'s contribution and captures learning for others.</div>
+                <button sc-camel-on-click="{{ goFeedback }}" class="btn btn-p">Give feedback</button>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <!-- 6 FEEDBACK -->
+        <sc-if value="{{ isFeedback }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:12px 20px 28px;display:flex;flex-direction:column;gap:20px">
+            <button sc-camel-on-click="{{ goStatusBack }}" class="back">{{ i.arrowL16 }}Back to request</button>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div class="ttl">How was the support?</div>
+              <div class="sub">Your feedback recognises {{ cur.expertName }}'s contribution and captures learning for others.</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:var(--brand-50)">
+              <span class="av" style="width:40px;height:40px;font-size:14px">{{ cur.expertInitials }}</span>
+              <div style="display:flex;flex-direction:column;gap:1px"><span style="font-size:14px;font-weight:600">{{ cur.skill }} with {{ cur.expertName }}</span><span style="font-size:12px;color:var(--muted-foreground)">{{ cur.type }} · {{ cur.completedLabel }}</span></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <span class="lbl">Rating</span>
+              <div style="display:flex;gap:8px">
+                <sc-for list="{{ ratings }}" as="r" hint-placeholder-count="5">
+                  <button sc-camel-on-click="{{ r.go }}" aria-label="{{ r.aria }}" aria-pressed="{{ r.pressed }}" style="width:48px;height:48px;border:1px solid {{ r.bd }};border-radius:10px;background:{{ r.bg }};color:{{ r.fg }};font-size:16px;font-weight:600;cursor:pointer;transition:background 150ms">{{ r.n }}</button>
+                </sc-for>
+              </div>
+              <sc-if value="{{ errRating }}" hint-placeholder-val="{{ false }}"><span class="err">Please choose a rating.</span></sc-if>
+            </div>
+            <label class="fld">
+              <span class="lbl">What support did you receive?</span>
+              <textarea value="{{ fb.received }}" sc-camel-on-change="{{ onReceived }}" rows="3" class="inp"></textarea>
+            </label>
+            <label class="fld">
+              <span class="lbl">What did you learn?</span>
+              <textarea value="{{ fb.learned }}" sc-camel-on-change="{{ onLearned }}" rows="3" class="inp"></textarea>
+            </label>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <span class="lbl">Was the support useful?</span>
+              <div class="segw"><sc-for list="{{ usefulOpts }}" as="o" hint-placeholder-count="2"><button sc-camel-on-click="{{ o.go }}" class="segb" style="background:{{ o.bg }};color:{{ o.fg }};box-shadow:{{ o.sh }}">{{ o.label }}</button></sc-for></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <span class="lbl">Would you recommend {{ cur.expertName }}?</span>
+              <div class="segw"><sc-for list="{{ recommendOpts }}" as="o" hint-placeholder-count="2"><button sc-camel-on-click="{{ o.go }}" class="segb" style="background:{{ o.bg }};color:{{ o.fg }};box-shadow:{{ o.sh }}">{{ o.label }}</button></sc-for></div>
+            </div>
+            <button sc-camel-on-click="{{ submitFb }}" class="btn btn-p">Submit feedback</button>
+          </div>
+        </sc-if>
+
+        <!-- MY REQUESTS -->
+        <sc-if value="{{ isRequests }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:20px 20px 28px;display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div class="ttl">My requests</div>
+              <div class="sub">Track support you've asked for and requests colleagues sent you.</div>
+            </div>
+            <div class="segw"><sc-for list="{{ reqViews }}" as="o" hint-placeholder-count="2"><button sc-camel-on-click="{{ o.go }}" class="segb" style="background:{{ o.bg }};color:{{ o.fg }};box-shadow:{{ o.sh }}">{{ o.label }}</button></sc-for></div>
+            <sc-for list="{{ reqList }}" as="r" hint-placeholder-count="3">
+              <button sc-camel-on-click="{{ r.open }}" class="card" style="display:flex;align-items:center;gap:10px;padding:14px;text-align:left;cursor:pointer;color:var(--foreground)">
+                <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px">
+                  <span style="display:flex;flex-wrap:wrap;align-items:center;gap:6px">
+                    <span style="font-size:15px;font-weight:600;margin-right:2px">{{ r.skill }}</span>
+                    <span class="pill" style="background:{{ r.badge.bg }};color:{{ r.badge.fg }};box-shadow:inset 0 0 0 1px {{ r.badge.ring }}">{{ r.status }}</span>
+                    <sc-if value="{{ r.needsFeedback }}" hint-placeholder-val="{{ false }}"><span class="pill" style="background:var(--accent);color:var(--accent-foreground)">Feedback needed</span></sc-if>
+                  </span>
+                  <span style="font-size:12px;color:var(--muted-foreground)">{{ r.meta }}</span>
+                  <span style="font-size:13px;color:var(--neutral-700);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.need }}</span>
+                </span>
+                <span style="color:var(--muted-foreground)">{{ i.chevR16 }}</span>
+              </button>
+            </sc-for>
+            <sc-if value="{{ reqEmptyMine }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:36px 16px;border:1px dashed var(--neutral-300);border-radius:12px;text-align:center;background:#fff">
+                <div style="font-size:15px;font-weight:600">No requests yet</div>
+                <div style="font-size:13px;color:var(--muted-foreground)">Search for a skill to find a colleague who can help.</div>
+                <button sc-camel-on-click="{{ goSearchEmpty }}" class="btn btn-p btn-sm">Find expertise</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ reqEmptyIncoming }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:36px 16px;border:1px dashed var(--neutral-300);border-radius:12px;text-align:center;background:#fff">
+                <div style="font-size:15px;font-weight:600">No one has asked you for support yet</div>
+                <div style="font-size:13px;color:var(--muted-foreground)">Keep your skills and availability up to date so colleagues can find you.</div>
+                <button sc-camel-on-click="{{ goSkills }}" class="btn btn-p btn-sm">Update my profile</button>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <!-- MY PROFILE & SKILLS -->
+        <sc-if value="{{ isSkills }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:20px 20px 28px;display:flex;flex-direction:column;gap:20px">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div class="ttl">My profile</div>
+              <div class="sub">Keep your skills and availability current so colleagues can find the right support.</div>
+            </div>
+
+            <div class="card" style="padding:16px;display:flex;flex-direction:column;gap:14px">
+              <div style="font-size:17px;font-weight:700;letter-spacing:-0.01em">About you</div>
+              <sc-for list="{{ meFields }}" as="f" hint-placeholder-count="6">
+                <label class="fld"><span class="lbl">{{ f.label }}</span><input value="{{ f.value }}" sc-camel-on-change="{{ f.on }}" class="inp"></label>
+              </sc-for>
+              <label class="fld"><span class="lbl">Short bio</span><textarea value="{{ me.bio }}" sc-camel-on-change="{{ onMe.bio }}" rows="3" class="inp"></textarea></label>
+              <label class="fld"><span class="lbl">I can support with</span><input value="{{ me.canSupportWith }}" sc-camel-on-change="{{ onMe.canSupportWith }}" placeholder="Separate topics with semicolons, e.g. Dashboard design; Data cleaning" class="inp"></label>
+              <div style="display:flex;flex-direction:column;gap:12px;padding:14px;border-radius:10px;background:var(--muted)">
+                <div style="font-size:14px;font-weight:600">Availability</div>
+                <button sc-camel-on-click="{{ meAvail.go }}" role="checkbox" aria-checked="{{ meAvail.aria }}" class="chk"><span class="box" style="background:{{ meAvail.bg }};border-color:{{ meAvail.bd }}">{{ meAvail.icon }}</span><span>Show me in search results and let colleagues request support</span></button>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                  <label class="fld"><span class="lbl">Status</span>
+                    <sc-raw-select value="{{ me.status }}" sc-camel-on-change="{{ onMe.status }}" class="inp">
+                      <sc-for list="{{ availStatuses }}" as="a" hint-placeholder-count="3"><option value="{{ a }}" label="{{ a }}">{{ a }}</option></sc-for>
+                    </sc-raw-select>
+                  </label>
+                  <label class="fld"><span class="lbl">Max active requests</span><input type="number" min="1" max="10" value="{{ me.max }}" sc-camel-on-change="{{ onMe.max }}" class="inp"></label>
+                </div>
+              </div>
+              <button sc-camel-on-click="{{ saveProfile }}" class="btn btn-p">Save profile</button>
+            </div>
+
+            <div class="card" style="padding:16px;display:flex;flex-direction:column;gap:14px">
+              <div style="font-size:17px;font-weight:700;letter-spacing:-0.01em">My skills</div>
+              <sc-for list="{{ skillList }}" as="s" hint-placeholder-count="3">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;animation:t1in 250ms cubic-bezier(0.22,1,0.36,1) both">
+                  <span style="display:flex;flex-direction:column;gap:2px;min-width:0">
+                    <span style="font-size:14px;font-weight:600">{{ s.name }}</span>
+                    <span style="font-size:12px;color:var(--muted-foreground)">{{ s.meta }}</span>
+                  </span>
+                  <button sc-camel-on-click="{{ s.remove }}" aria-label="{{ s.aria }}" style="width:32px;height:32px;border:0;border-radius:8px;background:none;color:var(--muted-foreground);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none" style-hover="background:var(--muted)">{{ i.x14 }}</button>
+                </div>
+              </sc-for>
+              <sc-if value="{{ noSkills }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--muted-foreground)">Add your first skill below.</div></sc-if>
+              <div style="display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--border);padding-top:14px">
+                <div style="font-size:14px;font-weight:600">Add or update a skill</div>
+                <label class="fld"><span class="lbl">Skill</span>
+                  <sc-raw-select value="{{ sf.skill }}" sc-camel-on-change="{{ onSf.skill }}" class="inp">
+                    <option value="" label="Choose a skill">Choose a skill</option>
+                    <sc-for list="{{ catalogue }}" as="g" hint-placeholder-count="3"><optgroup label="{{ g.category }}"><sc-for list="{{ g.skills }}" as="k" hint-placeholder-count="3"><option value="{{ k }}" label="{{ k }}">{{ k }}</option></sc-for></optgroup></sc-for>
+                  </sc-raw-select>
+                </label>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                  <label class="fld"><span class="lbl">Proficiency</span>
+                    <sc-raw-select value="{{ sf.proficiency }}" sc-camel-on-change="{{ onSf.proficiency }}" class="inp">
+                      <sc-for list="{{ levels }}" as="l" hint-placeholder-count="4"><option value="{{ l }}" label="{{ l }}">{{ l }}</option></sc-for>
+                    </sc-raw-select>
+                  </label>
+                  <label class="fld"><span class="lbl">Years</span><input type="number" min="0" max="60" value="{{ sf.years }}" sc-camel-on-change="{{ onSf.years }}" class="inp"></label>
+                </div>
+                <sc-for list="{{ sfChecks }}" as="c" hint-placeholder-count="2">
+                  <button sc-camel-on-click="{{ c.go }}" role="checkbox" aria-checked="{{ c.aria }}" class="chk"><span class="box" style="background:{{ c.bg }};border-color:{{ c.bd }}">{{ c.icon }}</span><span>{{ c.label }}</span></button>
+                </sc-for>
+                <button sc-camel-on-click="{{ saveSkill }}" class="btn btn-o">Save skill</button>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+
+      <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;left:16px;right:16px;bottom:100px;padding:12px 14px;border-radius:12px;background:var(--neutral-900);color:#fff;font-size:14px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow-xl);z-index:30;animation:t1in 250ms cubic-bezier(0.22,1,0.36,1) both"><span style="color:oklch(0.8 0.15 155)">{{ i.check16 }}</span>{{ toast }}</div>
+      </sc-if>
+
+      <sc-if value="{{ showTabs }}" hint-placeholder-val="{{ true }}">
+        <div style="flex:none;height:84px;padding:6px 8px 34px;border-top:1px solid var(--border);background:#fff;display:grid;grid-template-columns:repeat(4,minmax(0,1fr))">
+          <sc-for list="{{ tabbar }}" as="t" hint-placeholder-count="4">
+            <button sc-camel-on-click="{{ t.go }}" style="border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:{{ t.fg }};font-size:11px;font-weight:{{ t.fw }};cursor:pointer">{{ t.icon }}<span>{{ t.label }}</span></button>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+  </x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;home&quot;,&quot;search&quot;,&quot;profile&quot;,&quot;request&quot;,&quot;skills&quot;,&quot;requests&quot;],&quot;default&quot;:&quot;home&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showJourney&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;autoAccept&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+// Options and statuses mirror Learning-platfrom/SkillMapping lib/constants.ts and components/status-badges.tsx.
+const SUPPORT_TYPES = ['Quick advice','30-minute consultation','Peer learning','Project collaboration'];
+const PREFERRED_TIMINGS = ['This week','Next week','Flexible'];
+const PROFICIENCY_LEVELS = ['Beginner','Intermediate','Advanced','Expert'];
+const AVAILABILITY_STATUSES = ['Available','Limited','Unavailable'];
+const ACTIVE_STATUSES = ['Submitted','Awaiting response','Accepted','Rescheduled'];
+
+// A sample of the UNICEF skills catalogue (the full catalogue lives in the app).
+const CATALOGUE = [
+  ['Artificial Intelligence', ['AI Literacy','Generative AI','Prompt Engineering','Responsible AI']],
+  ['Cybersecurity', ['Cybersecurity']],
+  ['Data & Analytics', ['Data Analytics','Power BI','Data Visualization','Dashboard Design','Data Management']],
+  ['Design & Innovation', ['Design Thinking']],
+  ['Digital Health', ['Digital Health','Health Information Systems','DHIS2']],
+  ['Learning & Development', ['Facilitation','Coaching']],
+  ['Microsoft & Productivity', ['Microsoft 365','Power Automate']],
+  ['Monitoring, Evaluation & Learning', ['Monitoring & Evaluation','Survey Design','Theory of Change']],
+  ['Partnerships & Coordination', ['Partnership Management']],
+  ['Programme & Project Management', ['Project Management','Agile']],
+  ['Software & Development', ['Software Development']],
+];
+const CATEGORY = Object.fromEntries(CATALOGUE.flatMap(([c, ks]) => ks.map(k => [k, c])));
+const POPULAR = ['Power BI','Data Analytics','AI Literacy','Monitoring & Evaluation','Project Management','Digital Health'];
+
+const sk = (name, proficiency, years) => ({ name, proficiency, years });
+const EXPERTS = [
+  { id:'amina', name:'Amina Yusuf', title:'Digital Impact Specialist', office:'Nairobi', country:'Kenya', region:'Eastern & Southern Africa', languages:'English, Swahili',
+    offers:true, status:'Available', max:3, active:1, rating:4.8, reviews:12,
+    skills:[sk('Power BI','Expert',7), sk('Dashboard Design','Expert',5), sk('Data Analytics','Advanced',6), sk('Data Visualization','Advanced',6), sk('Microsoft 365','Intermediate',4)],
+    bio:'I support colleagues with data analysis, dashboard design and building data solutions using Power BI.',
+    canSupportWith:'Dashboard design and development; Data modelling and data cleaning; Visualisation best practices; Troubleshooting Power BI issues', learning:['Generative AI'] },
+  { id:'carlos', name:'Carlos Mendez', title:'Monitoring & Evaluation Specialist', office:'Panama City', country:'Panama', region:'Latin America & Caribbean', languages:'Spanish, English',
+    offers:true, status:'Available', max:2, active:2, rating:4.6, reviews:9,
+    skills:[sk('Monitoring & Evaluation','Expert',10), sk('Survey Design','Advanced',8), sk('Theory of Change','Advanced',6), sk('Power BI','Intermediate',3)],
+    bio:'Monitoring and evaluation lead. I help teams design indicators, surveys and the data models behind them.',
+    canSupportWith:'Indicator frameworks; Survey and sampling design; Theory of change workshops', learning:['GIS'] },
+  { id:'priya', name:'Priya Sharma', title:'AI & Digital Specialist', office:'New Delhi', country:'India', region:'South Asia', languages:'English, Hindi',
+    offers:true, status:'Available', max:4, active:1, rating:4.9, reviews:8,
+    skills:[sk('AI Literacy','Expert',5), sk('Generative AI','Expert',3), sk('Prompt Engineering','Advanced',3), sk('Responsible AI','Advanced',4), sk('Power BI','Intermediate',2)],
+    bio:'I help colleagues use AI tools responsibly and build simple digital workflows.',
+    canSupportWith:'Getting started with AI assistants; Prompt design for reports; Automating repetitive data tasks', learning:['Power Automate'] },
+  { id:'jean', name:'Jean Baptiste', title:'Health Information Systems Officer', office:'Dakar', country:'Senegal', region:'West & Central Africa', languages:'French, English',
+    offers:true, status:'Limited', max:3, active:1, rating:4.7, reviews:5,
+    skills:[sk('DHIS2','Expert',9), sk('Health Information Systems','Advanced',8), sk('Digital Health','Advanced',6), sk('Power BI','Intermediate',3)],
+    bio:'Health information systems, DHIS2 and turning routine health data into decisions.',
+    canSupportWith:'DHIS2 configuration; Health data analysis; Linking DHIS2 to Power BI', learning:[] },
+  { id:'lucia', name:'Lucía Torres', title:'Programme Manager', office:'Bogotá', country:'Colombia', region:'Latin America & Caribbean', languages:'Spanish, English',
+    offers:true, status:'Available', max:3, active:0, rating:5, reviews:6,
+    skills:[sk('Project Management','Expert',12), sk('Agile','Advanced',6), sk('Partnership Management','Advanced',8), sk('Facilitation','Advanced',7)],
+    bio:'I coach teams on planning, delivery and keeping partners aligned.',
+    canSupportWith:'Workplans and timelines; Running retrospectives; Partner and donor reporting', learning:['Design Thinking'] },
+  { id:'kwame', name:'Kwame Mensah', title:'Data Engineer', office:'Accra', country:'Ghana', region:'West & Central Africa', languages:'English',
+    offers:false, status:'Available', max:3, active:0, rating:0, reviews:0,
+    skills:[sk('Software Development','Expert',9), sk('Data Management','Advanced',7), sk('Data Analytics','Advanced',6), sk('Generative AI','Intermediate',2)],
+    bio:'Pipelines, databases and the plumbing behind analytics.',
+    canSupportWith:'Data pipelines; Database design; Cleaning data with code', learning:['Cybersecurity'] },
+];
+const ME = { name:'Tomás Herrera', title:'Programme Officer', office:'Panama City', region:'Latin America & Caribbean', country:'Panama', languages:'Spanish, English',
+  bio:'I coordinate partner programmes and help teams plan and report on their work.', canSupportWith:'Workplans; Partner reporting', offers:true, status:'Available', max:'3' };
+
+const STATUS_STYLE = {
+  'Submitted':['var(--secondary)','var(--secondary-foreground)','color-mix(in oklch, var(--primary) 20%, transparent)'],
+  'Awaiting response':['#fffbeb','#92400e','#fde68a'], 'Accepted':['#ecfdf5','#065f46','#a7f3d0'],
+  'Rescheduled':['#f0f9ff','#075985','#bae6fd'], 'Redirected':['#f5f3ff','#5b21b6','#ddd6fe'],
+  'Completed':['var(--primary)','#fff','var(--primary)'], 'Closed':['var(--muted)','var(--muted-foreground)','var(--border)'] };
+const AVAIL_STYLE = { Available:['#ecfdf5','#065f46','#a7f3d0'], Limited:['#fffbeb','#92400e','#fde68a'], Unavailable:['var(--muted)','var(--muted-foreground)','var(--border)'] };
+const STEPS = ['Awaiting response','Accepted','Completed','Closed'];
+const EXPERT_ACTIONS = {
+  'Submitted':[['accept','Accept','p'],['redirect','Redirect','o'],['decline','Decline','g']],
+  'Awaiting response':[['accept','Accept','p'],['reschedule','Suggest later time','o'],['redirect','Redirect','o'],['decline','Decline','g']],
+  'Accepted':[['complete','Mark as completed','p'],['reschedule','Reschedule','o']],
+  'Rescheduled':[['accept','Confirm new time','p'],['complete','Mark as completed','o']] };
+const ACTION_RESULT = { accept:['Accepted','Request accepted'], reschedule:['Rescheduled','Suggested another time'], redirect:['Redirected','Request redirected'], decline:['Closed','Request declined'], complete:['Completed','Marked as completed'] };
+const JOURNEY = [['1','Home','home'],['2','Search results','search'],['3','Expert profile','profile'],['4','Request support','request'],['5','Request detail','status'],['6','Feedback','feedback'],['+','My requests','requests'],['+','My profile & skills','skills']];
+const RANK = { Beginner:1, Intermediate:2, Advanced:3, Expert:4 };
+const AV_ORDER = { Available:0, Limited:1, Unavailable:2 };
+
+const P = {
+  network:['<rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/>'],
+  search:['<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>'], bell:['<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>'],
+  book:['<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>'],
+  msg:['<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>'], chevR:['<path d="m9 18 6-6-6-6"/>'], x:['<path d="M18 6 6 18"/><path d="m6 6 12 12"/>'],
+  pin:['<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>'], arrowL:['<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>'],
+  globe:['<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>'],
+  lang:['<path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/>'],
+  mail:['<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>'],
+  check:['<path d="M20 6 9 17l-5-5"/>'], clock:['<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>'], cal:['<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/>'],
+  home:['<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>'],
+  list:['<path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/>'],
+  user:['<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>'] };
+const ic = (n, s, fill) => React.createElement('svg', { width:s, height:s, viewBox:'0 0 24 24', fill: fill || 'none', stroke:'currentColor', strokeWidth:2, strokeLinecap:'round', strokeLinejoin:'round', style:{display:'block',flex:'none'}, dangerouslySetInnerHTML:{__html:P[n][0]} });
+const I = { network16:ic('network',16), search18:ic('search',18), search16:ic('search',16), bell20:ic('bell',20), book18:ic('book',18), msg18:ic('msg',18), chevR16:ic('chevR',16),
+  x14:ic('x',14), pin12:ic('pin',12), globe12:ic('globe',12), lang12:ic('lang',12), mail16:ic('mail',16), arrowL16:ic('arrowL',16), check12:ic('check',12), check16:ic('check',16), check18:ic('check',18),
+  clock18:ic('clock',18), cal18:ic('cal',18), home22:ic('home',22), list22:ic('list',22), user22:ic('user',22), search22:ic('search',22) };
+const initials = n => n.split(/\s+/).filter(Boolean).slice(0,2).map(w => w[0].toUpperCase()).join('');
+const first = n => n.split(' ')[0];
+const fmt = d => d.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+const TODAY = fmt(new Date());
+const seg = on => ({ bg: on ? '#fff' : 'transparent', fg: on ? 'var(--foreground)' : 'var(--muted-foreground)', sh: on ? 'var(--shadow-sm)' : 'none' });
+const badge = st => { const c = STATUS_STYLE[st] || STATUS_STYLE.Closed; return { bg:c[0], fg:c[1], ring:c[2] }; };
+const chk = (on, label, go) => ({ label, go, aria:String(on), bg: on ? 'var(--primary)' : '#fff', bd: on ? 'var(--primary)' : 'var(--neutral-400)', icon: on ? I.check12 : null });
+const plural = (n, one, many) => n + ' ' + (n === 1 ? one : many);
+
+class Component extends DCLogic {
+  scrollRef = React.createRef();
+  nextId = 104;
+  state = {
+    screen: this.props.startScreen ?? 'home', query:'Power BI', filter:'all', expertId:'amina', tab:'overview', from:'search',
+    req:{ skill:'Power BI', need:'', type:'30-minute consultation', timing:'Flexible' }, tried:false,
+    requests:[
+      { id:103, dir:'in', requester:'Sara Lindqvist', email:'sara.lindqvist@example.org', skill:'Project Management', type:'30-minute consultation', timing:'Next week', status:'Awaiting response', submitted:'29 Sep 2026',
+        need:"We're planning our first annual workplan with three partners and I'd like a sanity check on the timeline." },
+      { id:102, dir:'out', expertId:'jean', skill:'DHIS2', type:'Quick advice', timing:'This week', status:'Completed', submitted:'22 Sep 2026', accepted:'23 Sep 2026', completed:'25 Sep 2026',
+        need:'Pulling immunisation coverage from DHIS2 into a monthly report.' },
+      { id:101, dir:'out', expertId:'lucia', skill:'Agile', type:'Peer learning', timing:'Flexible', status:'Closed', feedback:true, submitted:'8 Sep 2026', accepted:'9 Sep 2026', completed:'16 Sep 2026',
+        need:'Running our first sprint retrospective with the country office team.' },
+    ],
+    curId:null, banner:null, unread:false, reqView:'mine',
+    fb:{ rating:0, received:'', learned:'', useful:'yes', recommend:'yes' }, fbTried:false,
+    me:{ ...ME },
+    mySkills:[ { name:'Project Management', proficiency:'Advanced', years:5, support:true, learning:false },
+      { name:'Microsoft 365', proficiency:'Intermediate', years:4, support:true, learning:false },
+      { name:'Power BI', proficiency:'Beginner', years:1, support:false, learning:true } ],
+    sf:{ skill:'', proficiency:'Intermediate', years:'1', support:true, learning:false }, toast:null,
+  };
+  componentWillUnmount(){ clearTimeout(this.t1); clearTimeout(this.t2); }
+  go(screen, extra){ this.setState({ screen, ...(extra||{}) }); if (this.scrollRef.current) this.scrollRef.current.scrollTop = 0; }
+  flash(msg){ clearTimeout(this.t2); this.setState({ toast: msg }); this.t2 = setTimeout(() => this.setState({ toast:null }), 2200); }
+  expert(id){ return EXPERTS.find(e => e.id === id) || EXPERTS[0]; }
+  // Mirrors effectiveAvailability() in lib/constants.ts; my own open requests count towards the expert's limit.
+  avail(e, requests){
+    const active = e.active + (requests || this.state.requests).filter(r => r.dir === 'out' && r.expertId === e.id && ACTIVE_STATUSES.includes(r.status)).length;
+    const atCapacity = active >= e.max;
+    const availability = !e.offers || e.status === 'Unavailable' ? 'Unavailable' : atCapacity ? 'Limited' : e.status;
+    return { availability, atCapacity, active, blocked: availability === 'Unavailable' || atCapacity };
+  }
+  openExpert(id, from){ const e = this.expert(id), q = this.state.query.trim().toLowerCase();
+    const hit = q && e.skills.find(k => k.name.toLowerCase().includes(q));
+    this.go('profile', { expertId:id, tab:'overview', from: from || 'search', req:{ ...this.state.req, skill: hit ? hit.name : e.skills[0].name } }); }
+  update(id, patch){ this.setState(s => ({ requests: s.requests.map(r => r.id === id ? { ...r, ...patch } : r) })); }
+  // Journey shortcuts need a request of mine in a given state.
+  ensureOut(status){
+    const id = this.nextId++;
+    const r = { id, dir:'out', expertId:'amina', skill:'Power BI', type:'30-minute consultation', timing:'This week', status, submitted:TODAY,
+      accepted: status === 'Awaiting response' ? null : TODAY, completed: status === 'Completed' ? TODAY : null,
+      need:'I need help structuring the data model behind our quarterly programme dashboard.' };
+    this.setState(s => ({ requests:[r, ...s.requests], curId:id }));
+    return id;
+  }
+  send(){
+    const s = this.state, e = this.expert(s.expertId);
+    if (s.req.need.trim().length < 10) { this.setState({ tried:true }); return; }
+    const id = this.nextId++;
+    const r = { id, dir:'out', expertId:e.id, skill:s.req.skill, type:s.req.type, timing:s.req.timing, need:s.req.need.trim(), status:'Awaiting response', submitted:TODAY };
+    this.setState(st => ({ requests:[r, ...st.requests], curId:id, tried:false, req:{ ...st.req, need:'' } }));
+    this.go('status', { banner:'submitted' });
+    if (this.props.autoAccept ?? true) { clearTimeout(this.t1); this.t1 = setTimeout(() => {
+      if (this.state.requests.find(x => x.id === id)?.status !== 'Awaiting response') return;
+      this.update(id, { status:'Accepted', accepted:TODAY }); this.setState({ unread:true }); this.flash(first(e.name) + ' accepted your request'); }, 3500); }
+  }
+  saveSkill(){
+    const f = this.state.sf;
+    if (!f.skill) { this.flash('Choose a skill first'); return; }
+    const years = Math.max(0, Math.min(60, parseInt(f.years, 10) || 0));
+    const row = { name:f.skill, proficiency:f.proficiency, years, support:f.support, learning:f.learning };
+    const exists = this.state.mySkills.some(k => k.name === f.skill);
+    this.setState(s => ({ mySkills: exists ? s.mySkills.map(k => k.name === f.skill ? row : k) : [...s.mySkills, row], sf:{ skill:'', proficiency:'Intermediate', years:'1', support:true, learning:false } }));
+    this.flash(exists ? 'Skill updated.' : 'Skill added.');
+  }
+
+  renderVals(){
+    const s = this.state, scr = s.screen, ex0 = this.expert(s.expertId);
+    const decorate = e => { const a = this.avail(e), c = AVAIL_STYLE[a.availability];
+      return { ...e, ...a, initials:initials(e.name), avBg:c[0], avFg:c[1], avRing:c[2], open:() => this.openExpert(e.id, scr === 'home' ? 'home' : 'search') }; };
+
+    // Expert profile
+    const exD = decorate(ex0), exFirst = first(ex0.name);
+    const ex = { ...exD, canRequest: !exD.blocked, topics: ex0.canSupportWith.split(';').map(t => t.trim()).filter(Boolean), hasLearning: ex0.learning.length > 0,
+      skillRows: [...ex0.skills].sort((a,b) => RANK[b.proficiency] - RANK[a.proficiency]), skillNames: ex0.skills.map(k => k.name),
+      ratingLabel: ex0.reviews ? ex0.rating.toFixed(1) + ' from ' + plural(ex0.reviews, 'review', 'reviews') : '',
+      panelMsg: exD.availability === 'Unavailable' ? exFirst + ' is not taking requests right now.'
+        : exD.atCapacity ? exFirst + ' has reached their active request limit. Try again soon or find another colleague.'
+        : 'Describe what you need and ' + exFirst + ' will accept, redirect or reschedule.' };
+
+    // Search — mirrors searchExperts() in lib/queries.ts
+    const q = s.query.trim().toLowerCase();
+    let results = EXPERTS.map(e => {
+      const matched = e.skills.filter(k => !q || k.name.toLowerCase().includes(q) || CATEGORY[k.name].toLowerCase().includes(q));
+      const other = q && (e.canSupportWith.toLowerCase().includes(q) || e.title.toLowerCase().includes(q) || e.name.toLowerCase().includes(q));
+      return { e, matched, hit: !q || matched.length > 0 || other };
+    }).filter(x => x.hit).map(x => ({ ...x, d: decorate(x.e) }));
+    if (s.filter === 'available') results = results.filter(x => x.d.availability === 'Available');
+    if (s.filter === 'limited') results = results.filter(x => x.d.availability !== 'Unavailable');
+    const best = x => Math.max(0, ...x.matched.map(k => RANK[k.proficiency]));
+    results.sort((a,b) => AV_ORDER[a.d.availability] - AV_ORDER[b.d.availability] || best(b) - best(a) || a.e.name.localeCompare(b.e.name));
+    results = results.map(x => { const ordered = [...(x.matched.length ? x.matched : x.e.skills)].sort((a,b) => RANK[b.proficiency] - RANK[a.proficiency]);
+      const main = ordered[0], rest = x.e.skills.filter(k => k !== main).slice(0,3);
+      return { ...x.d, main, op: x.d.availability === 'Unavailable' ? 0.6 : 1,
+        chips: rest.map(k => { const on = x.matched.includes(k) && !!q; return { name:k.name, bg: on ? 'var(--brand-100)' : 'var(--muted)', fg: on ? 'var(--brand-800)' : 'var(--neutral-600)' }; }) }; });
+
+    // Current request
+    const curRaw = s.requests.find(r => r.id === s.curId) || s.requests.find(r => r.dir === 'out');
+    const curE = curRaw.dir === 'out' ? this.expert(curRaw.expertId) : null;
+    const expertName = curE ? curE.name : s.me.name;
+    const stepIdx = STEPS.indexOf(curRaw.status === 'Rescheduled' ? 'Accepted' : curRaw.status);
+    const incoming = curRaw.dir === 'in';
+    const acts = incoming ? (EXPERT_ACTIONS[curRaw.status] || []) : [];
+    const details = [['Requested by', incoming ? curRaw.requester : s.me.name], ['Expert', expertName], ['Support type', curRaw.type], ['Preferred timing', curRaw.timing], ['Submitted', curRaw.submitted]];
+    if (curRaw.accepted) details.push(['Accepted', curRaw.accepted]);
+    if (curRaw.completed) details.push(['Completed', curRaw.completed]);
+    details.push(['Need', curRaw.need]);
+    const cur = { ...curRaw, expertName, expertFirst: first(expertName), expertInitials: initials(expertName), badge: badge(curRaw.status),
+      completedLabel: curRaw.completed ? 'Completed ' + curRaw.completed : 'Submitted ' + curRaw.submitted,
+      showSteps: stepIdx >= 0, steps: STEPS.map((l,k) => ({ label:l, bar: k <= stepIdx ? 'var(--primary)' : 'var(--muted)', fw: k <= stepIdx ? 600 : 400, fg: k <= stepIdx ? 'var(--foreground)' : 'var(--muted-foreground)' })),
+      details: details.map(([k,v]) => ({ k, v, span: k === 'Need' ? '1 / -1' : 'auto', fw: k === 'Need' ? 400 : 600 })),
+      isIncoming: incoming, noActions: incoming && acts.length === 0, mailto: incoming ? 'mailto:' + curRaw.email : '',
+      actions: acts.map(([a,label,v]) => ({ label, cls:'btn btn-sm btn-' + v, go: () => { const [st,msg] = ACTION_RESULT[a];
+        this.update(curRaw.id, { status:st, ...(a === 'accept' ? { accepted:TODAY } : {}), ...(a === 'complete' ? { completed:TODAY } : {}) }); this.flash(msg); } })),
+      canOpenExpert: !!curE, openExpert: () => curE && this.openExpert(curE.id, 'search'),
+      canCancel: !incoming && ['Submitted','Awaiting response'].includes(curRaw.status),
+      isRedirected: !incoming && curRaw.status === 'Redirected', findAnother: () => this.go('search', { query:curRaw.skill, filter:'all' }),
+      canSimulate: !incoming && ['Accepted','Rescheduled'].includes(curRaw.status),
+      needsFeedback: !incoming && curRaw.status === 'Completed' && !curRaw.feedback };
+
+    const activeOut = s.requests.find(r => r.dir === 'out' && (ACTIVE_STATUSES.includes(r.status) || (r.status === 'Completed' && !r.feedback)));
+    const activeIcon = { 'Awaiting response':['#d97706', I.clock18], 'Submitted':['#d97706', I.clock18], 'Accepted':['var(--primary)', I.cal18], 'Rescheduled':['#0284c7', I.cal18], 'Completed':['oklch(0.6 0.15 155)', I.check18] };
+
+    const mine = s.requests.filter(r => r.dir === 'out'), inc = s.requests.filter(r => r.dir === 'in');
+    const list = s.reqView === 'mine' ? mine : inc;
+    const hi = { home:'home', search:'search', profile:'search', request:'search', status:'requests', requests:'requests', feedback:'requests', skills:'skills' }[scr];
+    const onMe = k => e => this.setState({ me:{ ...this.state.me, [k]: e.target.value } });
+    const onSf = k => e => this.setState({ sf:{ ...this.state.sf, [k]: e.target.value } });
+    const toFeedback = () => this.go('feedback', { fb:{ rating:0, received:'', learned:'', useful:'yes', recommend:'yes' }, fbTried:false });
+
+    return {
+      i: I, showJourney: this.props.showJourney ?? true,
+      journey: JOURNEY.map(([n,label,id]) => { const on = scr === id; return { n, label, bg: on ? '#fff' : 'transparent', numBg: on ? 'var(--primary)' : 'var(--neutral-200)', numFg: on ? '#fff' : 'var(--neutral-700)', fw: on ? 600 : 400,
+        go: () => {
+          if (id === 'status') { const r = s.requests.find(x => x.id === s.curId && x.dir === 'out' && x.id >= 104); this.go('status', { banner:null, curId: r ? r.id : this.ensureOut('Accepted') }); return; }
+          if (id === 'feedback') { const r = s.requests.find(x => x.dir === 'out' && x.status === 'Completed' && !x.feedback); this.setState({ curId: r ? r.id : this.ensureOut('Completed') }); toFeedback(); return; }
+          if (id === 'request') { this.go('request', { tried:false }); return; }
+          this.go(id); } }; }),
+      isHome: scr === 'home', isSearch: scr === 'search', isProfile: scr === 'profile', isRequest: scr === 'request', isStatus: scr === 'status', isFeedback: scr === 'feedback', isRequests: scr === 'requests', isSkills: scr === 'skills',
+      showTabs: !['request','feedback'].includes(scr), scrollRef: this.scrollRef, hasUnread: s.unread, toast: s.toast,
+      goHome: () => this.go('home'), goSkills: () => this.go('skills'), goRequests: () => this.go('requests', { unread:false, reqView:'mine' }),
+      goRequestsBack: () => this.go('requests', { reqView: incoming ? 'incoming' : 'mine', banner:null }),
+      goSearchEmpty: () => this.go('search', { query:'', filter:'all' }), goSearchAvailable: () => this.go('search', { query:'', filter:'available' }),
+      goRequest: () => this.go('request', { tried:false }), goFeedback: toFeedback, goStatusBack: () => this.go('status', { banner:null }),
+      backLabel: s.from === 'home' ? 'Back to home' : 'Back to search', goBackResults: () => this.go(s.from === 'home' ? 'home' : 'search'),
+
+      popular: POPULAR.map(n => { const c = EXPERTS.filter(e => e.offers && e.skills.some(k => k.name === n)).length;
+        return { name:n, category:CATEGORY[n], count: plural(c, 'colleague can help', 'colleagues can help'), go: () => this.go('search', { query:n, filter:'all' }) }; }),
+      availableNow: EXPERTS.filter(e => this.avail(e).availability === 'Available').slice(0,3).map(e => ({ ...decorate(e), topSkills: e.skills.slice(0,3).map(k => k.name).join(' · ') })),
+      howItWorks: [ { icon:I.search18, title:'1. Search', text:'Look up a skill or topic to see who can help and when.' },
+        { icon:I.msg18, title:'2. Request', text:'Describe your need and preferred support type and timing.' },
+        { icon:I.book18, title:'3. Learn & share', text:'Rate the support and capture what you learned.' } ],
+      activeReq: activeOut ? { skill:activeOut.skill, first:first(this.expert(activeOut.expertId).name),
+        label: activeOut.status === 'Completed' ? 'Completed · Feedback needed' : activeOut.status,
+        iconBg: activeIcon[activeOut.status][0], icon: activeIcon[activeOut.status][1], open: () => this.go('status', { curId:activeOut.id, banner:null }) } : null,
+
+      query: s.query, hasQuery: !!s.query.trim(), noQuery: !s.query.trim(), onQuery: e => this.setState({ query: e.target.value }), clearQuery: () => this.setState({ query:'', filter:'all' }),
+      resultLabel: plural(results.length, 'result', 'results') + ' · Available colleagues are shown first.', results, noResults: !results.length,
+      filters: [['all','All'],['limited','Available or limited'],['available','Available now']].map(([id,label]) => { const on = s.filter === id;
+        return { label, bd: on ? 'var(--primary)' : 'var(--border)', bg: on ? 'var(--primary)' : '#fff', fg: on ? '#fff' : 'var(--foreground)', go: () => this.setState({ filter:id }) }; }),
+
+      ex, tabs: [['overview','Overview'],['skills','Skills']].map(([id,label]) => { const on = s.tab === id;
+        return { label, fw: on ? 600 : 500, fg: on ? 'var(--primary)' : 'var(--muted-foreground)', bd: on ? 'var(--primary)' : 'transparent', go: () => this.setState({ tab:id }) }; }),
+      tabOverview: s.tab === 'overview', tabSkills: s.tab === 'skills',
+
+      req: s.req, reqBack: () => this.go('profile'),
+      onTopic: e => this.setState({ req:{ ...s.req, skill:e.target.value } }), onNeed: e => this.setState({ req:{ ...s.req, need:e.target.value } }),
+      errNeed: s.tried && s.req.need.trim().length < 10, needBorder: s.tried && s.req.need.trim().length < 10 ? 'var(--destructive)' : 'var(--border)',
+      types: SUPPORT_TYPES.map(t => { const on = s.req.type === t; return { label:t, aria:String(on), bd: on ? 'var(--primary)' : 'var(--border)', bg: on ? 'var(--brand-50)' : '#fff', dot: on ? 'var(--primary)' : 'transparent', go: () => this.setState({ req:{ ...s.req, type:t } }) }; }),
+      timings: PREFERRED_TIMINGS.map(t => { const on = s.req.timing === t; return { label:t, aria:String(on), bd: on ? 'var(--primary)' : 'var(--border)', bg: on ? 'var(--primary)' : '#fff', fg: on ? '#fff' : 'var(--foreground)', go: () => this.setState({ req:{ ...s.req, timing:t } }) }; }),
+      reqSend: () => this.send(),
+
+      cur, bannerSubmitted: s.banner === 'submitted' && curRaw.id === s.curId, bannerFeedback: s.banner === 'feedback' && curRaw.id === s.curId,
+      cancelReq: () => { this.update(curRaw.id, { status:'Closed' }); this.setState({ banner:null }); this.flash('Request cancelled'); },
+      simulateDone: () => { this.update(curRaw.id, { status:'Completed', completed:TODAY }); this.setState({ unread:true, banner:null }); this.flash(cur.expertFirst + ' marked it as completed'); },
+
+      ratings: [1,2,3,4,5].map(n => { const on = n === s.fb.rating; return { n, aria: n + ' out of 5', pressed:String(on), bd: on ? 'var(--primary)' : 'var(--border)', bg: on ? 'var(--primary)' : '#fff', fg: on ? '#fff' : 'var(--foreground)', go: () => this.setState({ fb:{ ...s.fb, rating:n } }) }; }),
+      errRating: s.fbTried && !s.fb.rating, fb: s.fb,
+      onReceived: e => this.setState({ fb:{ ...s.fb, received:e.target.value } }), onLearned: e => this.setState({ fb:{ ...s.fb, learned:e.target.value } }),
+      usefulOpts: [['yes','Yes'],['no','No']].map(([id,label]) => ({ label, ...seg(s.fb.useful === id), go: () => this.setState({ fb:{ ...s.fb, useful:id } }) })),
+      recommendOpts: [['yes','Yes'],['no','No']].map(([id,label]) => ({ label, ...seg(s.fb.recommend === id), go: () => this.setState({ fb:{ ...s.fb, recommend:id } }) })),
+      submitFb: () => { if (!s.fb.rating) { this.setState({ fbTried:true }); return; } this.update(curRaw.id, { status:'Closed', feedback:true }); this.go('status', { banner:'feedback' }); },
+
+      reqViews: [['mine','Requests I made (' + mine.length + ')'],['incoming','Requests to me (' + inc.filter(r => ['Submitted','Awaiting response'].includes(r.status)).length + ')']].map(([id,label]) => ({ label, ...seg(s.reqView === id), go: () => this.setState({ reqView:id }) })),
+      reqList: list.map(r => { const who = r.dir === 'out' ? 'With ' + this.expert(r.expertId).name : 'From ' + r.requester;
+        return { ...r, badge:badge(r.status), needsFeedback: r.dir === 'out' && r.status === 'Completed' && !r.feedback, meta: who + ' · ' + r.type + ' · ' + r.submitted,
+          open: () => this.go('status', { curId:r.id, banner:null }) }; }),
+      reqEmptyMine: s.reqView === 'mine' && !mine.length, reqEmptyIncoming: s.reqView === 'incoming' && !inc.length,
+
+      me: s.me, onMe: { bio:onMe('bio'), canSupportWith:onMe('canSupportWith'), status:onMe('status'), max:onMe('max') },
+      meFields: [['name','Name'],['title','Job title'],['office','Office'],['region','Region'],['country','Country'],['languages','Languages']].map(([k,label]) => ({ label, value:s.me[k], on:onMe(k) })),
+      meAvail: chk(s.me.offers, '', () => this.setState({ me:{ ...s.me, offers:!s.me.offers } })), availStatuses: AVAILABILITY_STATUSES,
+      saveProfile: () => { if (!s.me.name.trim()) { this.flash('Name is required'); return; } this.flash('Profile saved.'); },
+      skillList: s.mySkills.map(k => ({ name:k.name, aria:'Remove ' + k.name, meta: k.proficiency + ' · ' + k.years + 'y' + (k.support ? ' · Supports others' : '') + (k.learning ? ' · Learning' : ''),
+        remove: () => this.setState(st => ({ mySkills: st.mySkills.filter(m => m.name !== k.name) })) })),
+      noSkills: !s.mySkills.length,
+      sf: s.sf, onSf: { skill:onSf('skill'), proficiency:onSf('proficiency'), years:onSf('years') },
+      catalogue: CATALOGUE.map(([category, skills]) => ({ category, skills })), levels: PROFICIENCY_LEVELS,
+      sfChecks: [ chk(s.sf.support, 'I can support others with this', () => this.setState({ sf:{ ...s.sf, support:!s.sf.support } })),
+        chk(s.sf.learning, "I'm interested in learning more", () => this.setState({ sf:{ ...s.sf, learning:!s.sf.learning } })) ],
+      saveSkill: () => this.saveSkill(),
+
+      tabbar: [['home','Home',I.home22,'home'],['search','Find',I.search22,'search'],['requests','Requests',I.list22,'requests'],['skills','Profile',I.user22,'skills']].map(([id,label,icon,to]) => ({ label, icon,
+        fg: hi === id ? 'var(--primary)' : 'var(--neutral-500)', fw: hi === id ? 600 : 500,
+        go: () => to === 'requests' ? this.go('requests', { unread:false, reqView:'mine' }) : to === 'search' ? this.go('search', { filter:'all' }) : this.go(to) })),
+    };
+  }
+}
+</script>
+
+
+</body></html>
