@@ -8,7 +8,7 @@ Clickable iPhone prototype of [Skill Mapping](https://github.com/Learning-platfr
 
 ## Kept in sync with the app
 
-This mirrors `Learning-platfrom/SkillMapping` at commit `057c2d5`.
+This mirrors the user-facing screens of `Learning-platfrom/SkillMapping` at commit `8c0f103`.
 
 - **Branding:** "Skill Mapping", UNICEF cyan `#1cabe2`, the warm off-white background and the Network logo.
 - **Options and statuses**, copied from `lib/constants.ts` and `components/status-badges.tsx`:
@@ -17,20 +17,26 @@ This mirrors `Learning-platfrom/SkillMapping` at commit `057c2d5`.
   - Proficiency levels (Beginner → Expert)
   - Availability (Available / Limited / Unavailable, including the rule that an expert at their request limit shows as Limited)
   - Request statuses
-- **Search** matches and sorts the way `searchExperts()` does. It has the same filters: All / Available or limited / Available now.
+- **Search** matches and sorts the way `searchExperts()` does. It has the same filters: All / Available or limited / Available now. It also has:
+  - skill suggestions as you type, each with its category and expert count;
+  - typo-tolerant matching with "Did you mean …?" (the app's smart-search feature);
+  - related skills when nothing matches. The app finds these with AI embeddings; the prototype uses a small hand-made list.
 - **Request detail** has:
+  - the "Here's what happens next" panel after a request is sent;
   - the 4-step progress bar;
   - "Cancel request" for the requester;
   - the expert's actions from `request-actions.tsx`, under My requests → *Requests to me*.
-- **Feedback** has the same fields as `feedback-form.tsx`. **My profile** has the same fields as `profile-form.tsx` and `skill-manager.tsx`.
+- **Feedback** has the same fields as `feedback-form.tsx`. **My profile** has the same fields as `profile-form.tsx`. **My skills** uses the same chip pickers as `skill-manager.tsx`: "I can help others with" and "I want to learn", with a shared level and free-form "(new)" skills.
 - **Skills:** only a sample of the UNICEF skills catalogue is included. The full catalogue stays in the app.
 
 ## Intentionally left out
 
-- Sign-in and password flows
-- Admin pages (Activity, Users)
+- Sign-in and password flows, plus the consent, cookie, privacy and terms pages
+- The "Privacy and your data" profile card and the location suggestions on Office / Region / Country
+- The "Get the app" download page
+- Admin pages (Activity, Users, Feedback inbox, Usage, Features)
 - The editor-only Skills catalogue page
-- The app-feedback page
+- The app-feedback page, including its replies
 
 The app uses DM Sans. The prototype uses the system font stack so it keeps working offline.
 

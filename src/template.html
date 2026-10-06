@@ -694,15 +694,28 @@ textarea.inp{height:auto;padding:10px 12px;line-height:1.45;resize:none}
         <!-- 2 SEARCH -->
         <sc-if value="{{ isSearch }}" hint-placeholder-val="{{ false }}">
           <div style="padding:16px 20px 28px;display:flex;flex-direction:column;gap:14px">
-            <div style="height:44px;display:flex;align-items:center;gap:8px;padding:0 12px;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--muted-foreground)">
-              {{ i.search16 }}
-              <input value="{{ query }}" sc-camel-on-change="{{ onQuery }}" placeholder="Try Power BI, M&amp;E, Cybersecurity…" aria-label="What skill or topic do you need help with?" style="flex:1;min-width:0;border:0;outline:none;font-size:15px;color:var(--foreground);background:none">
-              <sc-if value="{{ hasQuery }}" hint-placeholder-val="{{ false }}"><button sc-camel-on-click="{{ clearQuery }}" aria-label="Clear search" style="width:28px;height:28px;border:0;background:var(--muted);border-radius:999px;display:flex;align-items:center;justify-content:center;color:var(--neutral-600);cursor:pointer">{{ i.x14 }}</button></sc-if>
+            <div style="position:relative">
+              <div style="height:44px;display:flex;align-items:center;gap:8px;padding:0 12px;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--muted-foreground)">
+                {{ i.search16 }}
+                <input value="{{ query }}" sc-camel-on-change="{{ onQuery }}" sc-camel-on-focus="{{ onQueryFocus }}" sc-camel-on-blur="{{ onQueryBlur }}" sc-camel-on-key-down="{{ onQueryKey }}" role="combobox" aria-expanded="{{ suggestOpenStr }}" aria-autocomplete="list" autocomplete="off" placeholder="Try Power BI, M&amp;E, Cybersecurity…" aria-label="What skill or topic do you need help with?" style="flex:1;min-width:0;border:0;outline:none;font-size:15px;color:var(--foreground);background:none">
+                <sc-if value="{{ hasQuery }}" hint-placeholder-val="{{ false }}"><button sc-camel-on-click="{{ clearQuery }}" aria-label="Clear search" style="width:28px;height:28px;border:0;background:var(--muted);border-radius:999px;display:flex;align-items:center;justify-content:center;color:var(--neutral-600);cursor:pointer">{{ i.x14 }}</button></sc-if>
+              </div>
+              <sc-if value="{{ showSuggest }}" hint-placeholder-val="{{ false }}">
+                <div role="listbox" style="position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:20;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-lg);padding:4px;max-height:288px;overflow:auto">
+                  <sc-for list="{{ suggestions }}" as="o" hint-placeholder-count="4">
+                    <div role="option" aria-selected="{{ o.sel }}" sc-camel-on-mouse-down="{{ o.pick }}" sc-camel-on-mouse-enter="{{ o.hover }}" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 10px;border-radius:7px;cursor:pointer;background:{{ o.bg }}">
+                      <span style="display:flex;flex-direction:column;min-width:0"><span style="font-size:14px;font-weight:500">{{ o.name }}</span><span style="font-size:12px;color:var(--muted-foreground)">{{ o.category }}</span></span>
+                      <span style="font-size:12px;color:var(--muted-foreground);flex:none">{{ o.count }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px">
               <sc-if value="{{ hasQuery }}" hint-placeholder-val="{{ true }}"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em;line-height:1.25">Colleagues who can help with <span style="color:var(--primary)">{{ query }}</span></div></sc-if>
               <sc-if value="{{ noQuery }}" hint-placeholder-val="{{ false }}"><div style="font-size:18px;font-weight:700;letter-spacing:-0.01em;line-height:1.25">All colleagues offering support</div></sc-if>
               <div style="font-size:13px;color:var(--muted-foreground)">{{ resultLabel }}</div>
+              <sc-if value="{{ spelling }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--foreground)">Did you mean <button sc-camel-on-click="{{ spelling.go }}" style="border:0;background:none;padding:0;color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px">{{ spelling.name }}</button>?</div></sc-if>
             </div>
             <div style="display:flex;gap:6px;flex-wrap:wrap">
               <sc-for list="{{ filters }}" as="f" hint-placeholder-count="3">
@@ -734,10 +747,18 @@ textarea.inp{height:auto;padding:10px 12px;line-height:1.45;resize:none}
               </button>
             </sc-for>
             <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
-              <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:40px 16px;border:1px dashed var(--neutral-300);border-radius:12px;text-align:center;background:#fff">
-                <div style="font-size:15px;font-weight:600">No colleagues found</div>
-                <div style="font-size:13px;line-height:1.45;color:var(--muted-foreground)">Try a broader term like "Data" or "Technology", or include colleagues with limited availability.</div>
-                <button sc-camel-on-click="{{ clearQuery }}" class="btn btn-o btn-sm">Clear search</button>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:14px;padding:36px 16px;border:1px dashed var(--neutral-300);border-radius:12px;text-align:center;background:#fff">
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <div style="font-size:15px;font-weight:600">{{ noResultsTitle }}</div>
+                  <div style="font-size:13px;line-height:1.45;color:var(--muted-foreground);text-wrap:pretty">{{ noResultsText }}</div>
+                </div>
+                <sc-if value="{{ hasRelated }}" hint-placeholder-val="{{ false }}">
+                  <div aria-label="Related skills" style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px">
+                    <sc-for list="{{ related }}" as="r" hint-placeholder-count="3">
+                      <button sc-camel-on-click="{{ r.go }}" style="height:36px;display:inline-flex;align-items:center;gap:6px;padding:0 14px;border:1px solid var(--border);border-radius:999px;background:var(--background);color:var(--foreground);font-size:13px;font-weight:500;cursor:pointer">{{ r.name }}<span style="font-size:11px;font-weight:400;color:var(--muted-foreground)">{{ r.count }}</span></button>
+                    </sc-for>
+                  </div>
+                </sc-if>
               </div>
             </sc-if>
           </div>
@@ -864,7 +885,29 @@ textarea.inp{height:auto;padding:10px 12px;line-height:1.45;resize:none}
         <sc-if value="{{ isStatus }}" hint-placeholder-val="{{ false }}">
           <div style="padding:12px 20px 28px;display:flex;flex-direction:column;gap:16px">
             <button sc-camel-on-click="{{ goRequestsBack }}" class="back">{{ i.arrowL16 }}Back to requests</button>
-            <sc-if value="{{ bannerSubmitted }}" hint-placeholder-val="{{ false }}"><div class="ok" role="status"><span style="flex:none;margin-top:1px">{{ i.check16 }}</span><span>Your request has been sent to {{ cur.expertName }}. You'll see their response here.</span></div></sc-if>
+            <sc-if value="{{ bannerSubmitted }}" hint-placeholder-val="{{ false }}">
+              <section role="status" style="display:flex;flex-direction:column;gap:14px;padding:16px;border-radius:16px;border:1px solid color-mix(in oklch, var(--primary) 30%, transparent);background:color-mix(in oklch, var(--primary) 5%, #fff);animation:t1in 400ms cubic-bezier(0.22,1,0.36,1) both">
+                <div style="display:flex;gap:12px;align-items:flex-start">
+                  <span style="width:40px;height:40px;border-radius:999px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;flex:none">{{ i.ccheck20 }}</span>
+                  <div style="display:flex;flex-direction:column;gap:2px">
+                    <div style="font-size:17px;font-weight:700;letter-spacing:-0.01em;line-height:1.25;text-wrap:balance">Your request has been sent to {{ cur.expertName }}</div>
+                    <div style="font-size:13px;color:var(--muted-foreground)">Here's what happens next.</div>
+                  </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <sc-for list="{{ sentSteps }}" as="n" hint-placeholder-count="3">
+                    <div style="display:flex;gap:10px;align-items:flex-start">
+                      <span style="color:var(--primary);margin-top:2px">{{ n.icon }}</span>
+                      <div style="display:flex;flex-direction:column;gap:1px;font-size:13px;line-height:1.45"><span style="font-weight:600">{{ n.title }}</span><span style="color:var(--muted-foreground)">{{ n.body }}</span></div>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:8px">
+                  <button sc-camel-on-click="{{ goRequests }}" class="btn btn-p btn-sm">View my requests</button>
+                  <button sc-camel-on-click="{{ goSearchEmpty }}" class="btn btn-o btn-sm">{{ i.search16 }}Find other experts</button>
+                </div>
+              </section>
+            </sc-if>
             <sc-if value="{{ bannerFeedback }}" hint-placeholder-val="{{ false }}"><div class="ok" role="status"><span style="flex:none;margin-top:1px">{{ i.check16 }}</span><span>Thank you — your feedback helps the network learn and recognises expertise.</span></div></sc-if>
             <div class="card" style="padding:16px;display:flex;flex-direction:column;gap:16px;border-radius:16px">
               <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
@@ -1048,26 +1091,41 @@ textarea.inp{height:auto;padding:10px 12px;line-height:1.45;resize:none}
                 </div>
               </sc-for>
               <sc-if value="{{ noSkills }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--muted-foreground)">Add your first skill below.</div></sc-if>
-              <div style="display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--border);padding-top:14px">
-                <div style="font-size:14px;font-weight:600">Add or update a skill</div>
-                <label class="fld"><span class="lbl">Skill</span>
-                  <sc-raw-select value="{{ sf.skill }}" sc-camel-on-change="{{ onSf.skill }}" class="inp">
-                    <option value="" label="Choose a skill">Choose a skill</option>
-                    <sc-for list="{{ catalogue }}" as="g" hint-placeholder-count="3"><optgroup label="{{ g.category }}"><sc-for list="{{ g.skills }}" as="k" hint-placeholder-count="3"><option value="{{ k }}" label="{{ k }}">{{ k }}</option></sc-for></optgroup></sc-for>
+              <div style="display:flex;flex-direction:column;gap:16px;border-top:1px solid var(--border);padding-top:14px">
+                <div style="font-size:14px;font-weight:600;order:0">Add skills</div>
+                <sc-for list="{{ pickers }}" as="p" hint-placeholder-count="2">
+                  <div style="display:flex;flex-direction:column;gap:8px;order:{{ p.order }}">
+                    <span class="lbl">{{ p.label }}</span>
+                    <span style="font-size:12px;line-height:1.4;color:var(--muted-foreground)">{{ p.hint }}</span>
+                    <sc-if value="{{ p.hasChips }}" hint-placeholder-val="{{ false }}">
+                      <div aria-label="{{ p.selectedLabel }}" style="display:flex;flex-wrap:wrap;gap:6px">
+                        <sc-for list="{{ p.chips }}" as="c" hint-placeholder-count="2">
+                          <span style="display:inline-flex;align-items:center;gap:4px;padding:2px 2px 2px 11px;border-radius:999px;font-size:13px;font-weight:500;background:{{ c.bg }};color:{{ c.fg }};border:1px {{ c.bs }} {{ c.bd }}">{{ c.label }}<sc-if value="{{ c.isNew }}" hint-placeholder-val="{{ false }}"><span style="font-size:11px;font-weight:400">(new)</span></sc-if><button sc-camel-on-click="{{ c.remove }}" aria-label="{{ c.aria }}" style="width:24px;height:24px;border:0;border-radius:999px;background:none;display:flex;align-items:center;justify-content:center;color:inherit;cursor:pointer">{{ i.x12 }}</button></span>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                    <div style="position:relative">
+                      <input value="{{ p.q }}" sc-camel-on-change="{{ p.onQ }}" sc-camel-on-focus="{{ p.onFocus }}" sc-camel-on-blur="{{ p.onBlur }}" sc-camel-on-key-down="{{ p.onKey }}" placeholder="{{ p.placeholder }}" disabled="{{ p.full }}" role="combobox" aria-expanded="{{ p.openStr }}" aria-autocomplete="list" aria-label="{{ p.label }}" autocomplete="off" class="inp">
+                      <sc-if value="{{ p.open }}" hint-placeholder-val="{{ false }}">
+                        <div role="listbox" style="position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:20;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-lg);padding:4px;max-height:256px;overflow:auto">
+                          <sc-for list="{{ p.options }}" as="o" hint-placeholder-count="4">
+                            <div role="option" aria-selected="{{ o.sel }}" sc-camel-on-mouse-down="{{ o.pick }}" sc-camel-on-mouse-enter="{{ o.hover }}" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 10px;border-radius:7px;cursor:pointer;background:{{ o.bg }}">
+                              <sc-if value="{{ o.isNew }}" hint-placeholder-val="{{ false }}"><span style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:var(--primary)">{{ i.plus14 }}Add "{{ o.label }}" as a new skill</span></sc-if>
+                              <sc-if value="{{ o.isKnown }}" hint-placeholder-val="{{ true }}"><span style="font-size:14px;font-weight:500">{{ o.label }}</span><span style="font-size:12px;color:var(--muted-foreground);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ o.category }}</span></sc-if>
+                            </div>
+                          </sc-for>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </div>
+                </sc-for>
+                <label class="fld" style="order:2"><span class="lbl">My level for these</span>
+                  <sc-raw-select value="{{ level }}" sc-camel-on-change="{{ onLevel }}" class="inp">
+                    <sc-for list="{{ levels }}" as="l" hint-placeholder-count="4"><option value="{{ l }}" label="{{ l }}">{{ l }}</option></sc-for>
                   </sc-raw-select>
                 </label>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-                  <label class="fld"><span class="lbl">Proficiency</span>
-                    <sc-raw-select value="{{ sf.proficiency }}" sc-camel-on-change="{{ onSf.proficiency }}" class="inp">
-                      <sc-for list="{{ levels }}" as="l" hint-placeholder-count="4"><option value="{{ l }}" label="{{ l }}">{{ l }}</option></sc-for>
-                    </sc-raw-select>
-                  </label>
-                  <label class="fld"><span class="lbl">Years</span><input type="number" min="0" max="60" value="{{ sf.years }}" sc-camel-on-change="{{ onSf.years }}" class="inp"></label>
-                </div>
-                <sc-for list="{{ sfChecks }}" as="c" hint-placeholder-count="2">
-                  <button sc-camel-on-click="{{ c.go }}" role="checkbox" aria-checked="{{ c.aria }}" class="chk"><span class="box" style="background:{{ c.bg }};border-color:{{ c.bd }}">{{ c.icon }}</span><span>{{ c.label }}</span></button>
-                </sc-for>
-                <button sc-camel-on-click="{{ saveSkill }}" class="btn btn-o">Save skill</button>
+                <sc-if value="{{ skillMsg }}" hint-placeholder-val="{{ false }}"><div role="status" style="order:4;font-size:13px;line-height:1.45;color:{{ skillMsg.fg }}">{{ skillMsg.text }}</div></sc-if>
+                <button sc-camel-on-click="{{ saveSkills }}" class="btn btn-p" style="order:5">Save skills</button>
               </div>
             </div>
           </div>
@@ -1112,6 +1170,26 @@ const CATALOGUE = [
   ['Software & Development', ['Software Development']],
 ];
 const CATEGORY = Object.fromEntries(CATALOGUE.flatMap(([c, ks]) => ks.map(k => [k, c])));
+const ALL_SKILLS = CATALOGUE.flatMap(([, ks]) => ks);
+const MAX_CHIPS = 20;
+
+// Rough stand-in for pg_trgm word_similarity(), used by the app's smart search (R-15).
+const trigrams = s => { const out = new Set(); for (const w of s.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean)) { const p = '  ' + w + ' '; for (let i = 0; i < p.length - 2; i++) out.add(p.slice(i, i + 3)); } return out; };
+const similarity = (a, b) => { const A = trigrams(a), B = trigrams(b); if (!A.size || !B.size) return 0; let n = 0; A.forEach(x => B.has(x) && n++); return n / (A.size + B.size - n); };
+const wordSimilarity = (q, name) => { const w = name.split(/\s+/); let best = 0;
+  for (let i = 0; i < w.length; i++) for (let j = i + 1; j <= w.length; j++) best = Math.max(best, similarity(q, w.slice(i, j).join(' ')));
+  return best; };
+// The app finds related skills with embeddings; the prototype fakes it with a few hand-picked neighbours.
+const RELATED_HINTS = [
+  [/excel|spreadsheet|sheet/, ['Microsoft 365','Data Analytics','Power BI']],
+  [/python|code|coding|program|sql|database|pipeline/, ['Software Development','Data Management','Data Analytics']],
+  [/stat|indicator|kpi|baseline/, ['Monitoring & Evaluation','Survey Design','Data Analytics']],
+  [/chatgpt|gpt|llm|copilot|machine learning|ml\b/, ['Generative AI','Prompt Engineering','AI Literacy']],
+  [/report|donor|grant/, ['Partnership Management','Data Visualization','Project Management']],
+  [/workshop|training|teach|meeting/, ['Facilitation','Agile','Project Management']],
+  [/health|clinic|hospital|immuni/, ['Digital Health','DHIS2','Health Information Systems']],
+  [/chart|graph|visual|map/, ['Data Visualization','Dashboard Design','Power BI']],
+];
 const POPULAR = ['Power BI','Data Analytics','AI Literacy','Monitoring & Evaluation','Project Management','Digital Health'];
 
 const sk = (name, proficiency, years) => ({ name, proficiency, years });
@@ -1179,9 +1257,10 @@ const P = {
   check:['<path d="M20 6 9 17l-5-5"/>'], clock:['<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>'], cal:['<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/>'],
   home:['<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>'],
   list:['<path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/>'],
+  ccheck:['<path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/>'], plus:['<path d="M5 12h14"/><path d="M12 5v14"/>'],
   user:['<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>'] };
 const ic = (n, s, fill) => React.createElement('svg', { width:s, height:s, viewBox:'0 0 24 24', fill: fill || 'none', stroke:'currentColor', strokeWidth:2, strokeLinecap:'round', strokeLinejoin:'round', style:{display:'block',flex:'none'}, dangerouslySetInnerHTML:{__html:P[n][0]} });
-const I = { network16:ic('network',16), search18:ic('search',18), search16:ic('search',16), bell20:ic('bell',20), book18:ic('book',18), msg18:ic('msg',18), chevR16:ic('chevR',16),
+const I = { network16:ic('network',16), ccheck16:ic('ccheck',16), ccheck20:ic('ccheck',20), bell16:ic('bell',16), clock16:ic('clock',16), plus14:ic('plus',14), x12:ic('x',12), search18:ic('search',18), search16:ic('search',16), bell20:ic('bell',20), book18:ic('book',18), msg18:ic('msg',18), chevR16:ic('chevR',16),
   x14:ic('x',14), pin12:ic('pin',12), globe12:ic('globe',12), lang12:ic('lang',12), mail16:ic('mail',16), arrowL16:ic('arrowL',16), check12:ic('check',12), check16:ic('check',16), check18:ic('check',18),
   clock18:ic('clock',18), cal18:ic('cal',18), home22:ic('home',22), list22:ic('list',22), user22:ic('user',22), search22:ic('search',22) };
 const initials = n => n.split(/\s+/).filter(Boolean).slice(0,2).map(w => w[0].toUpperCase()).join('');
@@ -1213,7 +1292,8 @@ class Component extends DCLogic {
     mySkills:[ { name:'Project Management', proficiency:'Advanced', years:5, support:true, learning:false },
       { name:'Microsoft 365', proficiency:'Intermediate', years:4, support:true, learning:false },
       { name:'Power BI', proficiency:'Beginner', years:1, support:false, learning:true } ],
-    sf:{ skill:'', proficiency:'Intermediate', years:'1', support:true, learning:false }, toast:null,
+    pick:{ help:{ q:'', chips:[], open:false, active:0 }, learn:{ q:'', chips:[], open:false, active:0 } }, level:'Intermediate', skillMsg:null,
+    suggestOpen:false, suggestActive:-1, toast:null,
   };
   componentWillUnmount(){ clearTimeout(this.t1); clearTimeout(this.t2); }
   go(screen, extra){ this.setState({ screen, ...(extra||{}) }); if (this.scrollRef.current) this.scrollRef.current.scrollTop = 0; }
@@ -1250,15 +1330,26 @@ class Component extends DCLogic {
       if (this.state.requests.find(x => x.id === id)?.status !== 'Awaiting response') return;
       this.update(id, { status:'Accepted', accepted:TODAY }); this.setState({ unread:true }); this.flash(first(e.name) + ' accepted your request'); }, 3500); }
   }
-  saveSkill(){
-    const f = this.state.sf;
-    if (!f.skill) { this.flash('Choose a skill first'); return; }
-    const years = Math.max(0, Math.min(60, parseInt(f.years, 10) || 0));
-    const row = { name:f.skill, proficiency:f.proficiency, years, support:f.support, learning:f.learning };
-    const exists = this.state.mySkills.some(k => k.name === f.skill);
-    this.setState(s => ({ mySkills: exists ? s.mySkills.map(k => k.name === f.skill ? row : k) : [...s.mySkills, row], sf:{ skill:'', proficiency:'Intermediate', years:'1', support:true, learning:false } }));
-    this.flash(exists ? 'Skill updated.' : 'Skill added.');
+  setPick(key, fn, clearMsg){ this.setState(st => ({ pick:{ ...st.pick, [key]:{ ...st.pick[key], ...fn(st.pick[key]) } }, ...(clearMsg ? { skillMsg:null } : {}) })); }
+  // Mirrors addSkillsBatch() in app/actions/profile.ts.
+  saveSkills(){
+    const { help, learn } = this.state.pick, level = this.state.level;
+    const names = new Map([...help.chips, ...learn.chips].map(c => [c.label.toLowerCase(), c.label]));
+    if (!names.size) { this.setState({ skillMsg:{ text:'Pick or type at least one skill.', fg:'var(--destructive)' } }); return; }
+    const has = (list, l) => list.some(c => c.label.toLowerCase() === l);
+    const created = [...help.chips, ...learn.chips].some(c => c.isNew);
+    this.setState(st => {
+      const mine = [...st.mySkills];
+      for (const [l, name] of names) {
+        const canHelp = has(help.chips, l), wantsToLearn = has(learn.chips, l), i = mine.findIndex(k => k.name.toLowerCase() === l);
+        if (i >= 0) mine[i] = { ...mine[i], support: mine[i].support || canHelp, learning: mine[i].learning || wantsToLearn, ...(canHelp ? { proficiency:level } : {}) };
+        else mine.push({ name, proficiency: canHelp ? level : 'Beginner', years:0, support:canHelp, learning:wantsToLearn });
+      }
+      return { mySkills:mine, pick:{ help:{ q:'', chips:[], open:false, active:0 }, learn:{ q:'', chips:[], open:false, active:0 } },
+        skillMsg:{ text:'Saved ' + plural(names.size, 'skill', 'skills') + '.' + (created ? ' New tags will be matched to the catalogue automatically.' : ''), fg:'oklch(0.45 0.11 155)' } };
+    });
   }
+  supportCount(name){ return EXPERTS.filter(e => e.skills.some(k => k.name === name)).length + (this.state.mySkills.some(k => k.name === name && k.support) ? 1 : 0); }
 
   renderVals(){
     const s = this.state, scr = s.screen, ex0 = this.expert(s.expertId);
@@ -1277,7 +1368,7 @@ class Component extends DCLogic {
     // Search — mirrors searchExperts() in lib/queries.ts
     const q = s.query.trim().toLowerCase();
     let results = EXPERTS.map(e => {
-      const matched = e.skills.filter(k => !q || k.name.toLowerCase().includes(q) || CATEGORY[k.name].toLowerCase().includes(q));
+      const matched = e.skills.filter(k => !q || k.name.toLowerCase().includes(q) || CATEGORY[k.name].toLowerCase().includes(q) || (q.length >= 3 && wordSimilarity(q, k.name) >= 0.45));
       const other = q && (e.canSupportWith.toLowerCase().includes(q) || e.title.toLowerCase().includes(q) || e.name.toLowerCase().includes(q));
       return { e, matched, hit: !q || matched.length > 0 || other };
     }).filter(x => x.hit).map(x => ({ ...x, d: decorate(x.e) }));
@@ -1289,6 +1380,47 @@ class Component extends DCLogic {
       const main = ordered[0], rest = x.e.skills.filter(k => k !== main).slice(0,3);
       return { ...x.d, main, op: x.d.availability === 'Unavailable' ? 0.6 : 1,
         chips: rest.map(k => { const on = x.matched.includes(k) && !!q; return { name:k.name, bg: on ? 'var(--brand-100)' : 'var(--muted)', fg: on ? 'var(--brand-800)' : 'var(--neutral-600)' }; }) }; });
+
+    // Smart search extras (search/page.tsx): spelling suggestion, related skills on empty results, typeahead.
+    const spellingHit = q.length >= 3 && !ALL_SKILLS.some(n => n.toLowerCase().includes(q))
+      ? ALL_SKILLS.map(n => ({ n, score: wordSimilarity(q, n) })).filter(x => x.score >= 0.3 && x.n.toLowerCase() !== q).sort((a,b) => b.score - a.score)[0] : null;
+    const hint = RELATED_HINTS.find(([re]) => re.test(q));
+    const relatedNames = !q || results.length ? [] : (hint ? hint[1] : ALL_SKILLS.map(n => ({ n, score: wordSimilarity(q, n) })).filter(x => x.score >= 0.2).sort((a,b) => b.score - a.score).map(x => x.n))
+      .filter(n => this.supportCount(n) > 0).slice(0, 5);
+    const rankS = n => n.toLowerCase().startsWith(q) ? 0 : n.toLowerCase().includes(q) ? 1 : 2;
+    const suggestNames = !q ? [] : ALL_SKILLS.filter(n => (n + ' ' + CATEGORY[n]).toLowerCase().includes(q))
+      .sort((a,b) => rankS(a) - rankS(b) || this.supportCount(b) - this.supportCount(a) || a.localeCompare(b)).slice(0, 8);
+    const pickSkill = n => this.setState({ query:n, suggestOpen:false, suggestActive:-1 });
+    const expertsLabel = n => { const c = this.supportCount(n); return c === 0 ? 'No experts yet' : plural(c, 'expert', 'experts'); };
+
+    // Skill chip pickers (components/skill-chip-picker.tsx)
+    const picker = (key, label, hint, order) => {
+      const p = s.pick[key], tq = p.q.trim(), tl = tq.toLowerCase();
+      const sel = new Set(p.chips.map(c => c.label.toLowerCase()));
+      const pool = ALL_SKILLS.filter(n => !sel.has(n.toLowerCase()));
+      const matches = !tl ? pool.slice(0, 8) : [...pool.filter(n => n.toLowerCase().startsWith(tl)), ...pool.filter(n => !n.toLowerCase().startsWith(tl) && (n + ' ' + CATEGORY[n]).toLowerCase().includes(tl))].slice(0, 8);
+      const canNew = tq.length >= 2 && !ALL_SKILLS.some(n => n.toLowerCase() === tl) && !sel.has(tl);
+      const options = [...matches.map(n => ({ label:n, isNew:false })), ...(canNew ? [{ label:tq, isNew:true }] : [])];
+      const full = p.chips.length >= MAX_CHIPS;
+      const add = c => this.setPick(key, cur => cur.chips.length >= MAX_CHIPS || cur.chips.some(x => x.label.toLowerCase() === c.label.toLowerCase()) ? {} : { chips:[...cur.chips, c], q:'', active:0 }, true);
+      return { label, hint, order, q:p.q, full, hasChips: p.chips.length > 0, selectedLabel:'Selected: ' + label,
+        placeholder: full ? 'Maximum reached' : 'Type a skill, e.g. Power BI', open: p.open && options.length > 0, openStr:String(p.open && options.length > 0),
+        chips: p.chips.map(c => ({ ...c, aria:'Remove ' + c.label, bg: c.isNew ? '#fff' : 'var(--secondary)', fg: c.isNew ? 'var(--primary)' : 'var(--secondary-foreground)', bs: c.isNew ? 'dashed' : 'solid', bd: c.isNew ? 'var(--primary)' : 'transparent',
+          remove: () => this.setPick(key, cur => ({ chips: cur.chips.filter(x => x.label !== c.label) }), true) })),
+        options: options.map((o, i) => ({ ...o, isKnown:!o.isNew, category:CATEGORY[o.label], sel:String(i === p.active), bg: i === p.active ? 'var(--secondary)' : 'transparent',
+          pick: e => { e.preventDefault(); add(o); }, hover: () => this.setPick(key, () => ({ active:i })) })),
+        onQ: e => { const v = e.target.value; this.setPick(key, () => ({ q:v, open:true, active:0 }), true); },
+        onFocus: () => this.setPick(key, () => ({ open:true })),
+        onBlur: () => setTimeout(() => this.setPick(key, () => ({ open:false })), 120),
+        onKey: e => {
+          if (e.nativeEvent.isComposing || e.keyCode === 229) return;
+          if (e.key === 'ArrowDown') { e.preventDefault(); this.setPick(key, cur => ({ open:true, active: Math.min(cur.active + 1, options.length - 1) })); }
+          else if (e.key === 'ArrowUp') { e.preventDefault(); this.setPick(key, cur => ({ active: Math.max(cur.active - 1, 0) })); }
+          else if (e.key === 'Enter' || e.key === ',') { if (!tq && e.key === 'Enter') return; e.preventDefault(); const o = options[p.active] || options[0]; if (o) add(o); }
+          else if (e.key === 'Backspace' && !p.q && p.chips.length) this.setPick(key, cur => ({ chips: cur.chips.slice(0, -1) }), true);
+          else if (e.key === 'Escape') this.setPick(key, () => ({ open:false }));
+        } };
+    };
 
     // Current request
     const curRaw = s.requests.find(r => r.id === s.curId) || s.requests.find(r => r.dir === 'out');
@@ -1321,7 +1453,6 @@ class Component extends DCLogic {
     const list = s.reqView === 'mine' ? mine : inc;
     const hi = { home:'home', search:'search', profile:'search', request:'search', status:'requests', requests:'requests', feedback:'requests', skills:'skills' }[scr];
     const onMe = k => e => this.setState({ me:{ ...this.state.me, [k]: e.target.value } });
-    const onSf = k => e => this.setState({ sf:{ ...this.state.sf, [k]: e.target.value } });
     const toFeedback = () => this.go('feedback', { fb:{ rating:0, received:'', learned:'', useful:'yes', recommend:'yes' }, fbTried:false });
 
     return {
@@ -1350,7 +1481,23 @@ class Component extends DCLogic {
         label: activeOut.status === 'Completed' ? 'Completed · Feedback needed' : activeOut.status,
         iconBg: activeIcon[activeOut.status][0], icon: activeIcon[activeOut.status][1], open: () => this.go('status', { curId:activeOut.id, banner:null }) } : null,
 
-      query: s.query, hasQuery: !!s.query.trim(), noQuery: !s.query.trim(), onQuery: e => this.setState({ query: e.target.value }), clearQuery: () => this.setState({ query:'', filter:'all' }),
+      query: s.query, hasQuery: !!s.query.trim(), noQuery: !s.query.trim(), clearQuery: () => this.setState({ query:'', filter:'all', suggestOpen:false }),
+      onQuery: e => this.setState({ query: e.target.value, suggestOpen:true, suggestActive:-1 }),
+      onQueryFocus: () => this.setState({ suggestOpen:true }), onQueryBlur: () => setTimeout(() => this.setState({ suggestOpen:false }), 120),
+      onQueryKey: e => {
+        if (e.nativeEvent.isComposing || e.keyCode === 229) return;
+        if (e.key === 'ArrowDown' && suggestNames.length) { e.preventDefault(); this.setState(st => ({ suggestOpen:true, suggestActive: Math.min(st.suggestActive + 1, suggestNames.length - 1) })); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); this.setState(st => ({ suggestActive: Math.max(st.suggestActive - 1, -1) })); }
+        else if (e.key === 'Enter') { const n = s.suggestOpen && suggestNames[s.suggestActive]; n ? pickSkill(n) : this.setState({ suggestOpen:false }); }
+        else if (e.key === 'Escape') this.setState({ suggestOpen:false });
+      },
+      showSuggest: s.suggestOpen && suggestNames.length > 0, suggestOpenStr: String(s.suggestOpen && suggestNames.length > 0),
+      suggestions: suggestNames.map((n, i) => ({ name:n, category:CATEGORY[n], count:expertsLabel(n), sel:String(i === s.suggestActive), bg: i === s.suggestActive ? 'var(--secondary)' : 'transparent',
+        pick: e => { e.preventDefault(); pickSkill(n); }, hover: () => this.setState({ suggestActive:i }) })),
+      spelling: spellingHit ? { name:spellingHit.n, go: () => pickSkill(spellingHit.n) } : null,
+      noResultsTitle: q ? 'No colleagues found for \u201c' + s.query.trim() + '\u201d' : 'No colleagues found',
+      noResultsText: relatedNames.length ? 'These related skills have colleagues who can help:' : 'Try a broader term like \u201cData\u201d or \u201cTechnology\u201d, or include colleagues with limited availability.',
+      hasRelated: relatedNames.length > 0, related: relatedNames.map(n => ({ name:n, count:expertsLabel(n), go: () => pickSkill(n) })),
       resultLabel: plural(results.length, 'result', 'results') + ' · Available colleagues are shown first.', results, noResults: !results.length,
       filters: [['all','All'],['limited','Available or limited'],['available','Available now']].map(([id,label]) => { const on = s.filter === id;
         return { label, bd: on ? 'var(--primary)' : 'var(--border)', bg: on ? 'var(--primary)' : '#fff', fg: on ? '#fff' : 'var(--foreground)', go: () => this.setState({ filter:id }) }; }),
@@ -1366,6 +1513,9 @@ class Component extends DCLogic {
       timings: PREFERRED_TIMINGS.map(t => { const on = s.req.timing === t; return { label:t, aria:String(on), bd: on ? 'var(--primary)' : 'var(--border)', bg: on ? 'var(--primary)' : '#fff', fg: on ? '#fff' : 'var(--foreground)', go: () => this.setState({ req:{ ...s.req, timing:t } }) }; }),
       reqSend: () => this.send(),
 
+      sentSteps: [ { icon:I.bell16, title: cur.expertFirst + ' has been notified', body:'The request is now in ' + cur.expertFirst + "'s Incoming requests list and counts toward their open requests." },
+        { icon:I.clock16, title:'Expect a reply within 2 working days', body: cur.expertFirst + ' can accept, suggest a new time or decline. The status below updates as soon as they respond.' },
+        { icon:I.ccheck16, title:'Track everything in My requests', body:'Come back here or open My requests at any time to check the status, cancel or leave feedback.' } ],
       cur, bannerSubmitted: s.banner === 'submitted' && curRaw.id === s.curId, bannerFeedback: s.banner === 'feedback' && curRaw.id === s.curId,
       cancelReq: () => { this.update(curRaw.id, { status:'Closed' }); this.setState({ banner:null }); this.flash('Request cancelled'); },
       simulateDone: () => { this.update(curRaw.id, { status:'Completed', completed:TODAY }); this.setState({ unread:true, banner:null }); this.flash(cur.expertFirst + ' marked it as completed'); },
@@ -1390,11 +1540,10 @@ class Component extends DCLogic {
       skillList: s.mySkills.map(k => ({ name:k.name, aria:'Remove ' + k.name, meta: k.proficiency + ' · ' + k.years + 'y' + (k.support ? ' · Supports others' : '') + (k.learning ? ' · Learning' : ''),
         remove: () => this.setState(st => ({ mySkills: st.mySkills.filter(m => m.name !== k.name) })) })),
       noSkills: !s.mySkills.length,
-      sf: s.sf, onSf: { skill:onSf('skill'), proficiency:onSf('proficiency'), years:onSf('years') },
-      catalogue: CATALOGUE.map(([category, skills]) => ({ category, skills })), levels: PROFICIENCY_LEVELS,
-      sfChecks: [ chk(s.sf.support, 'I can support others with this', () => this.setState({ sf:{ ...s.sf, support:!s.sf.support } })),
-        chk(s.sf.learning, "I'm interested in learning more", () => this.setState({ sf:{ ...s.sf, learning:!s.sf.learning } })) ],
-      saveSkill: () => this.saveSkill(),
+      pickers: [ picker('help', 'I can help others with', "Pick several at once. If a skill isn't listed, type it and press Enter.", 1),
+        picker('learn', 'I want to learn', 'Colleagues who can help with these will be easier to find.', 3) ],
+      level: s.level, onLevel: e => this.setState({ level:e.target.value }), levels: PROFICIENCY_LEVELS,
+      skillMsg: s.skillMsg, saveSkills: () => this.saveSkills(),
 
       tabbar: [['home','Home',I.home22,'home'],['search','Find',I.search22,'search'],['requests','Requests',I.list22,'requests'],['skills','Profile',I.user22,'skills']].map(([id,label,icon,to]) => ({ label, icon,
         fg: hi === id ? 'var(--primary)' : 'var(--neutral-500)', fw: hi === id ? 600 : 500,
